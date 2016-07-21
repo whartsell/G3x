@@ -14,6 +14,7 @@ function joystickHandler(encoder)
 end
 
 function refreshCallback()
+	dataBarDisplayArea:refresh()
 	softKeyDisplayArea:refresh()
 end
 
@@ -25,10 +26,19 @@ function GDU37XCallback(hdgBug,altBug,asiBug,vsiBug)
 	data.vsiBug = vsiBug
 	GDU37X:Update(data)
 end
-	
+
+function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime)
+	data = {}
+	data.GpsCurrentWaypoint = GpsCurrentWaypoint
+	data.GpsBearing = GpsBearing
+	data.GpsDistance = GpsDistance
+	data.GpsTime = GpsTime
+	GAD29:Update(data)
+end
+
 
 --drives the refresh on the menu currently...will most likely become a gdu37x callback
-refreshTimer = timer_start(10,100,refreshCallback)
+refreshTimer = timer_start(10,33,refreshCallback)
 
 --These probably should be with the GDU37x as they are buttons on it but im keeping them separate 
 -- due to the fact they are driven by a plugin.  If/when Airmanager has hardware support I will 
@@ -49,3 +59,8 @@ xpl_dataref_subscribe(
 	'sim/cockpit/autopilot/airspeed', 'FLOAT',
 	'sim/cockpit/autopilot/vertical_velocity', 'FLOAT',
 	GDU37XCallback)
+	
+xpl_dataref_subscribe('whartsell/g3x/current_wpt','STRING',
+	'sim/cockpit2/radios/indicators/gps_bearing_deg_mag','FLOAT',
+	'sim/cockpit2/radios/indicators/gps_dme_distance_nm','FLOAT',
+	'sim/cockpit2/radios/indicators/gps_dme_time_min','FLOAT',GAD29Callback)
