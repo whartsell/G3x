@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pluginstrument>
+    <aircraft>stateTest</aircraft>
+    <author>unknown</author>
+    <compatibleFSX>false</compatibleFSX>
+    <compatibleP3D>false</compatibleP3D>
+    <compatibleXPL>true</compatibleXPL>
+    <configVersion>1</configVersion>
+    <description></description>
+    <pluginInterfaceVersion>100</pluginInterfaceVersion>
+    <prefHeight>800</prefHeight>
+    <prefWidth>480</prefWidth>
+    <type>unknown</type>
+    <uuid>17b81ea6-70b3-4159-993e-a83b3d6406cb</uuid>
+    <version>1</version>
+</pluginstrument>

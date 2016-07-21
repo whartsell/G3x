@@ -1,0 +1,1215 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Glass Panel fitted the free X-Plane Eclipse 550 small jet
+-- Panel can be used for other (2 engine) aircrafts, by adjusting the parameters
+-- made by macnfly June 2014
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Autopilot buttons send and show the correct number - check !
+-- Should we have the detail screens for Electric, Pressure and Fuel overview ?
+-- Airspeed colored band may not be showing the correct levels
+-- Flight planning is INOP for now
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------- Parameters --
+call_sign = "N31SL"
+n1_max = 100
+itt_max = 810
+fuelflow_max = 810
+n2_max = 100
+oilpress_max = 170
+oiltemp_max = 128
+fuelcapacity = 1698*0.453 -- kg
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- Development --
+deltax = 208
+deltay = 56
+-------------------------------------------------------------------------------------------------------------------------------------------------- Standard fonts and colors --
+sound_click = sound_add("click.wav")
+sound_softclick = sound_add("softclick.wav")
+sound_buzzer = sound_add("buzzer.wav")
+sound_seatbelt = sound_add("seatbelt.wav")
+ -------------------------------------------------------------------------------------------------------------------------------------------------- Standard fonts and colors --
+txt_load_font("Consolas.ttf")
+font_red_16 = "-fx-font-family:\"Consolas\"; -fx-font-size:16px; -fx-fill: red; -fx-text-alignment: LEFT;"
+font_orange_16 = "-fx-font-family:\"Consolas\"; -fx-font-size:16px; -fx-fill: orange; -fx-text-alignment: LEFT;"
+font_orange_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: orange; -fx-text-alignment: CENTER;"
+font_gold_16 = "-fx-font-family:\"Consolas\"; -fx-font-size:16px; -fx-fill: gold; -fx-text-alignment: LEFT;"
+font_gold_22 = "-fx-font-family:\"Consolas\"; -fx-font-size:22px; -fx-fill: gold; -fx-text-alignment: CENTER;"
+font_limegreen_18 = "-fx-font-family:\"Consolas\"; -fx-font-size:18px; -fx-fill: limegreen; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_limegreen_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: limegreen; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_fuchsia_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: fuchsia; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_fuchsia_22 = "-fx-font-family:\"Consolas\"; -fx-font-size:22px; -fx-fill: fuchsia; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_skyblue_22 = "-fx-font-family:\"Consolas\"; -fx-font-size:22px; -fx-fill: skyblue; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_skyblue_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: skyblue; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_skyblue_18 = "-fx-font-family:\"Consolas\"; -fx-font-size:18px; -fx-fill: skyblue; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_darkslategrey_16 = "-fx-font-family:\"Consolas\"; -fx-font-size:16px; -fx-fill: darkslategrey; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_white_28 = "-fx-font-family:\"Consolas\"; -fx-font-size:28px; -fx-fill: white; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_white_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: white; -fx-font-weight:bold; -fx-text-alignment: CENTER;"
+font_white_18 = "-fx-font-family:\"Consolas\"; -fx-font-size:18px; -fx-fill: white; -fx-font-weight:bold; -fx-text-alignment: CENTER;" -- added font for Attitude ind baro display
+font_white_16 = "-fx-font-family:\"Consolas\"; -fx-font-size:16px; -fx-fill: white; -fx-font-weight:bold; -fx-text-alignment: CENTER;" -- added for OAT display
+font_firebrick_20 = "-fx-font-family:\"Consolas\"; -fx-font-size:20px; -fx-fill: firebrick; -fx-text-alignment: CENTER;"
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Horizon image --
+img_horizon = img_add("eclipse_horizon.png",deltax,deltay,800,768)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Tape Mask Shadow --
+
+image_id = img_add ( "tape_mask.png" , deltax,deltay,455,392 )
+--------------------------------------------------------------------------------------------------------------------------------------------------------------- Speed images --
+img_speed0 = img_add("speed0.png",0+deltax,-192+deltay,80,384)
+img_speed1 = img_add("speed1.png",0+deltax,-192+deltay,80,384)
+img_speed2 = img_add("speed2.png",0+deltax,-192+deltay,80,384)
+img_speed3 = img_add("speed3.png",0+deltax,-192+deltay,80,384)
+img_speed4 = img_add("speed4.png",0+deltax,-192+deltay,80,384)
+img_speed5 = img_add("speed5.png",0+deltax,-192+deltay,80,384)
+img_speed6 = img_add("speed6.png",0+deltax,-192+deltay,80,384)
+img_speed7 = img_add("speed7.png",0+deltax,-192+deltay,80,384)
+img_speed8 = img_add("speed8.png",0+deltax,-192+deltay,80,384)
+img_ias_bug = img_add("eclipse_ias_bug.png",50+deltax,172+deltay,40,40)
+----------------------------------------------------------------------------------------------------------------------------------------------------------- Altimeter images --
+img_altitude0 = img_add("altitude0.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude1 = img_add("altitude1.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude2 = img_add("altitude2.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude3 = img_add("altitude3.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude4 = img_add("altitude4.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude5 = img_add("altitude5.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude6 = img_add("altitude6.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude7 = img_add("altitude7.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude8 = img_add("altitude8.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude9 = img_add("altitude9.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude10 = img_add("altitude10.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude11 = img_add("altitude11.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude12 = img_add("altitude12.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude13 = img_add("altitude13.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_altitude14 = img_add("altitude14.png",512-80+deltax-52,-288-480+deltay,80,960)
+img_alt_bug = img_add("eclipse_alt_bug.png",512-90+deltax-52,172+deltay,40,40)
+------------------------------------------------------------------------------------------------------------------------------------------------------- Glass panel backdrop --
+img_add("eclipse_backdrop_imp.png",deltax,deltay,1024,768)
+txt_add(call_sign, font_orange_20, 880+deltax, 349-144+deltay, 200, 60)
+FD_bars = img_add ( "fd_bars.png" , 355 , 242 , 219 , 33 )
+--------------------------------------------------------------------------------------------------------------------------------------------------------------- Engine bands --
+img_n1_left = img_add("eclipse_engine_band.png",532+deltax,32+deltay,12,125)
+img_n1_right = img_add("eclipse_engine_band.png",608+deltax,32+deltay,12,125)
+img_itt_left = img_add("eclipse_engine_band.png",532+128+deltax,32+deltay,12,125)
+img_itt_right = img_add("eclipse_engine_band.png",608+128+deltax,32+deltay,12,125)
+img_fuelflow_left = img_add("eclipse_engine_band.png",532+256+deltax,32+deltay,12,125)
+img_fuelflow_right = img_add("eclipse_engine_band.png",608+256+deltax,32+deltay,12,125)
+img_n2_left = img_add("eclipse_engine_band.png",532+384+deltax,32+deltay,12,125)
+img_n2_right = img_add("eclipse_engine_band.png",608+384+deltax,32+deltay,12,125)
+img_oilpress_left = img_add("eclipse_engine_band.png",532+deltax,32+192+deltay,12,125)
+img_oilpress_right = img_add("eclipse_engine_band.png",608+deltax,32+192+deltay,12,125)
+img_oiltemp_left = img_add("eclipse_engine_band.png",532+128+deltax,32+192+deltay,12,125)
+img_oiltemp_right = img_add("eclipse_engine_band.png",608+128+deltax,32+192+deltay,12,125)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- Engine text --
+txt_n1_left = txt_add("000", font_skyblue_18,532+deltax,162+deltay,30,100)
+txt_n1_right = txt_add("000", font_skyblue_18,592+deltax,162+deltay,30,100)
+txt_itt_left = txt_add("000", font_skyblue_18,532+128+deltax,162+deltay,30,100)
+txt_itt_right = txt_add("000", font_skyblue_18,592+128+deltax,162+deltay,30,100)
+txt_fuelflow_left = txt_add("000", font_skyblue_18,532+256+deltax,162+deltay,30,100)
+txt_fuelflow_right = txt_add("000", font_skyblue_18,592+256+deltax,162+deltay,30,100)
+txt_n2_left = txt_add("000", font_skyblue_18,532+384+deltax,162+deltay,30,100)
+txt_n2_right = txt_add("000", font_skyblue_18,592+384+deltax,162+deltay,30,100)
+txt_oilpress_left = txt_add("000", font_skyblue_18,532+deltax,162+192+deltay,30,100)
+txt_oilpress_right = txt_add("000", font_skyblue_18,592+deltax,162+192+deltay,30,100)
+txt_oiltemp_left = txt_add("000", font_skyblue_18,532+128+deltax,162+192+deltay,30,100)
+txt_oiltemp_right = txt_add("000", font_skyblue_18,592+128+deltax,162+192+deltay,30,100)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- ILS markers --
+img_ils_horizontal = img_add("eclipse_ils_horizontal.png",241+deltax,344+deltay,30,30)
+img_ils_vertical = img_add("eclipse_ils_vertical.png",99+deltax,177+deltay,30,30)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- Roll marker --
+img_roll_indicator = img_add("eclipse_roll_indicator.png",256-20+deltax,0+deltay,40,384)
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Atitude values --
+txt_airspeed = txt_add("000", font_white_28, 0+deltax-20, 180+deltay, 100, 60)
+txt_flightlevel = txt_add("000", font_white_28, 393+deltax-25, 180+deltay, 100, 60)
+txt_altitude_hundred = txt_add("000", font_white_20, 436+deltax-30, 185+deltay, 100, 60)
+img_vertical_speed_target = img_add("vertical_speed_target.png",377+deltax+102,184+deltay,32,15)
+img_vertical_speed_indicator = img_add("vertical_speed_indicator.png",379+deltax+ 113,189+deltay+1,16,7)
+
+-- annunciator images
+img_apan_arm = img_add("img_apan_arm.png",deltax+85,deltay+0,291,39)
+img_hdgan_arm = img_add("img_hdgan_arm.png",deltax+85,deltay+0,291,39)
+img_locan_arm = img_add("img_locan_arm.png",deltax+85,deltay+0,291,39)
+img_altan_arm = img_add("img_altan_arm.png",deltax+85,deltay+0,291,39)
+img_apran_arm = img_add("img_apran_arm.png",deltax+85,deltay+0,291,39)
+img_spdan_arm = img_add("img_spdan_arm.png",deltax+85,deltay+0,291,39)
+img_athan_arm = img_add("img_athan_arm.png",deltax+85,deltay+0,291,39)
+img_navan_arm = img_add("img_navan_arm.png",deltax+85,deltay+0,291,39)
+img_gsan_arm = img_add("img_gsan_arm.png",deltax+85,deltay+0,291,39)
+img_vsan_arm = img_add("img_vsan_arm.png",deltax+85,deltay+0,291,39)
+img_fdan_arm = img_add("img_fdan_arm.png",deltax+85,deltay+0,291,39)
+img_apan = img_add("img_apan.png",deltax+85,deltay+0,291,39)
+img_hdgan = img_add("img_hdgan.png",deltax+85,deltay+0,291,39)
+img_locan = img_add("img_locan.png",deltax+85,deltay+0,291,39)
+img_altan = img_add("img_altan.png",deltax+85,deltay+0,291,39)
+img_apran = img_add("img_apran.png",deltax+85,deltay+0,291,39)
+img_spdan = img_add("img_spdan.png",deltax+85,deltay+0,291,39)
+img_athan = img_add("img_athan.png",deltax+85,deltay+0,291,39)
+img_navan = img_add("img_navan.png",deltax+85,deltay+0,291,39)
+img_gsan = img_add("img_gsan.png",deltax+85,deltay+0,291,39)
+img_vsan = img_add("img_vsan.png",deltax+85,deltay+0,291,39)
+img_fdan = img_add("img_fdan.png",deltax+85,deltay+0,291,39)
+--hide all
+visible(img_apan_arm, false)
+visible(img_hdgan_arm, false)
+visible(img_locan_arm, false)
+visible(img_altan_arm, false)
+visible(img_apran_arm, false)
+visible(img_spdan_arm, false)
+visible(img_athan_arm , false)
+visible(img_navan_arm , false)
+visible(img_gsan_arm , false)
+visible(img_vsan_arm , false)
+visible(img_fdan_arm, false)
+visible(img_apan, false)
+visible(img_hdgan , false)
+visible(img_locan, false)
+visible(img_altan , false)
+visible(img_apran, false)
+visible(img_spdan, false)
+visible(img_athan, false)
+visible(img_navan, false)
+visible(img_gsan, false)
+visible(img_vsan , false)
+visible(img_fdan , false)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Autopilot text --
+txt_ias = txt_add("000", font_fuchsia_20, 0+deltax+10, 7+deltay, 80, 60)
+txt_alt = txt_add("00000", font_fuchsia_20, 433+deltax-58, 7+deltay, 80, 60)
+txt_vs_act = txt_add("0000", font_white_20, 433+deltax+3, 359+deltay-31, 80, 60)
+txt_vs = txt_add("0000", font_fuchsia_20, 433+deltax+3, 359+deltay-31-289, 80, 60)
+txt_ra = txt_add("RA 0", font_white_20,  5+deltax+75, 320+deltay-10, 90, 30)
+visible(txt_ra, false)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------- Indicators --
+img__indicator_outermarker = img_add("outer_marker.png",392+deltax+75,30+deltay-25,50*0.6,40*0.6) visible(img__indicator_outermarker, false)
+img__indicator_middlemarker = img_add("middle_marker.png",392+deltax+75,30+deltay-25,50*0.6,40*0.6) visible(img__indicator_middlemarker, false)
+img__indicator_innermarker = img_add("inner_marker.png",392+deltax+75,30+deltay-25,50*0.6,40*0.6) visible(img__indicator_innermarker, false)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------ HSI parts --
+img_hsi_rose = img_add("eclipse_compass.png",256-160+deltax,576-160+deltay,320,320)
+img_adf1_needle = img_add("eclipse_adf1.png",256-160+deltax,576-160+deltay,320,320)
+img_adf2_needle = img_add("eclipse_adf2.png",256-160+deltax,576-160+deltay,320,320)
+img_hsi_needle = img_add("eclipse_hsi_needle.png",256-160+deltax,576-160+deltay,320,320)
+img_middle_needle = img_add("eclipse_hsi_middle_needle.png",0+deltax,0+deltay,5,106)
+--img_heading_bug = img_add("eclipse_hdg_bug.png",0+deltax,0+deltay,40,40)
+img_heading_bug1 = img_add("eclipse_hdg_bug1.png",446,466,37,334)
+txt_crs = txt_add("000", font_gold_22, 0+deltax, 406+deltay, 100, 60)
+txt_hdg = txt_add("000", font_fuchsia_22, 412+deltax, 406+deltay, 100, 60)
+txt_nav_mode = txt_add("NAV1", font_limegreen_20, 880+deltax, 349-120+deltay, 200, 60) 
+img_wind_rose_arrow = img_add("wind_rose_arrow.png",30+deltax,460+deltay,50,50)
+txt_wind_speed = txt_add("0", font_limegreen_18, 5+deltax,510+deltay-65, 100, 60)
+
+txt_gs = txt_add("0", font_white_18, 5+deltax+400,510+deltay-65, 100, 60)
+txt_tas = txt_add("0", font_white_18, 5+deltax+400,510+deltay-65+22, 100, 60)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------- DME text --
+txt_dme1 = txt_add("000", font_firebrick_20, 0+deltax, 730+deltay, 100, 60)
+txt_dme2 = txt_add("000", font_firebrick_20, 412+deltax, 730+deltay, 100, 60)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------- Radio text --
+com1txt = txt_add("---.--", font_skyblue_22, 724+deltax, 598+deltay, 200, 60)
+com2txt = txt_add("---.--", font_skyblue_22, 868+deltax, 598+deltay, 200, 60)
+nav1txt = txt_add("---.--", font_skyblue_22, 724+deltax, 642+deltay, 200, 60)
+nav2txt = txt_add("---.--", font_skyblue_22, 868+deltax, 642+deltay, 200, 60)
+adf1txt = txt_add("000", font_skyblue_22, 724+deltax, 686+deltay, 200, 60)
+adf2txt = txt_add("000", font_skyblue_22, 868+deltax, 686+deltay, 200, 60)
+xpntxt = txt_add("0000", font_skyblue_22, 724-8+deltax, 731+deltay, 200, 60)
+txt_inhg = txt_add("29.92", font_skyblue_20, 868+8+deltax, 731+deltay, 200, 60) 
+txt_inhg_atitude = txt_add("29.92 IN", font_white_18, 260+deltax-15, 320+deltay, 180, 55) --txt_inhg_atitude
+select_com1_freq = txt_add("___", font_gold_22, 706+deltax, 600+deltay, 200, 60)
+select_com1_dec = txt_add("__", font_gold_22, 748+deltax, 600+deltay, 200, 60)
+select_com2_freq = txt_add("___", font_gold_22, 706+144+deltax, 600+deltay, 200, 60)
+select_com2_dec = txt_add("__", font_gold_22, 748+144+deltax, 600+deltay, 200, 60)
+
+select_nav1_freq = txt_add("___", font_gold_22, 706+deltax, 600+44+deltay, 200, 60)
+select_nav1_dec = txt_add("__", font_gold_22, 748+deltax, 600+44+deltay, 200, 60)
+select_nav2_freq = txt_add("___", font_gold_22, 706+144+deltax, 600+44+deltay, 200, 60)
+select_nav2_dec = txt_add("__", font_gold_22, 748+144+deltax, 600+44+deltay, 200, 60)
+
+select_adf1_dec1 = txt_add("_", font_gold_22, 712+deltax, 600+88+deltay, 200, 60)
+select_adf1_dec2 = txt_add("_", font_gold_22, 724+deltax, 600+88+deltay, 200, 60)
+select_adf1_dec3 = txt_add("_", font_gold_22, 736+deltax, 600+88+deltay, 200, 60)
+
+select_adf2_dec1 = txt_add("_", font_gold_22, 856+deltax, 600+88+deltay, 200, 60)
+select_adf2_dec2 = txt_add("_", font_gold_22, 868+deltax, 600+88+deltay, 200, 60)
+select_adf2_dec3 = txt_add("_", font_gold_22, 880+deltax, 600+88+deltay, 200, 60)
+
+select_xpdr_dec1 = txt_add("_", font_gold_22, 698+deltax, 600+132+deltay, 200, 60)
+select_xpdr_dec2 = txt_add("_", font_gold_22, 710+deltax, 600+132+deltay, 200, 60)
+select_xpdr_dec3 = txt_add("_", font_gold_22, 722+deltax, 600+132+deltay, 200, 60)
+select_xpdr_dec4 = txt_add("_", font_gold_22, 734+deltax, 600+132+deltay, 200, 60)
+
+group_select = group_add(select_com1_freq, select_com1_dec, select_com2_freq, select_com2_dec, select_nav1_freq, select_nav1_dec, select_nav2_freq, select_nav2_dec,
+                         select_adf1_dec1, select_adf1_dec2, select_adf1_dec3, select_adf2_dec1, select_adf2_dec2, select_adf2_dec3, select_xpdr_dec1, select_xpdr_dec2,
+						 select_xpdr_dec3, select_xpdr_dec4)
+-- Show the com1 FREQ selection at boot (first selection)						 
+visible(group_select, false)
+visible(select_com1_freq, true)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------- OAT text --
+txt_oat = txt_add("0", font_white_16 , 5+deltax+110-43, 320+deltay+30, 90, 30)
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Volts and amps --
+txt_bus_volt_left = txt_add("0", font_skyblue_20, 720+deltax, 349-72+deltay, 200, 60)
+txt_bus_volt_right = txt_add("0", font_skyblue_20, 880+deltax, 349-72+deltay, 200, 60)
+txt_bus_load_left = txt_add("0", font_skyblue_20, 720+deltax, 349-48+deltay, 200, 60)
+txt_bus_load_right = txt_add("0", font_skyblue_20, 880+deltax, 349-48+deltay, 200, 60)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------- Gear --
+img_gear_up_nose = img_add("eclipse_gear_up.png",566+deltax,510+deltay,20,20)
+img_gear_transit_nose = img_add("eclipse_gear_transit.png",566+deltax,510+deltay,20,20)
+img_gear_down_nose = img_add("eclipse_gear_down.png",566+deltax,510+deltay,20,20)
+img_gear_up_left = img_add("eclipse_gear_up.png",544+deltax,540+deltay,20,20)
+img_gear_transit_left = img_add("eclipse_gear_transit.png",544+deltax,540+deltay,20,20)
+img_gear_down_left = img_add("eclipse_gear_down.png",544+deltax,540+deltay,20,20)
+img_gear_up_right = img_add("eclipse_gear_up.png",588+deltax,540+deltay,20,20)
+img_gear_transit_right = img_add("eclipse_gear_transit.png",588+deltax,540+deltay,20,20)
+img_gear_down_right = img_add("eclipse_gear_down.png",588+deltax,540+deltay,20,20)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------- Flaps --
+img_flaps_static = img_add("eclipse_flaps_static.png",612+deltax,475+deltay,75,75)
+img_flaps_deployment = img_add("eclipse_flaps.png",612+deltax,475+deltay,75,75)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------- Trim --
+img_rudder_trim = img_add("eclipse_arrow_horizontal.png",593+deltax,622+deltay,20,20)
+img_aileron_trim = img_add("eclipse_arrow_horizontal.png",593+deltax,674+deltay,20,20)
+img_pitch_trim = img_add("eclipse_arrow_vertical.png",715+deltax,667+deltay,20,20)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------- Fuel qty --
+img_fuel_qty = img_add("eclipse_arrow_horizontal.png",620+deltax,520+deltay,20,20)
+txt_fuel_qty = txt_add("000", font_skyblue_20, 880+deltax, 349-96+deltay, 200, 60)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------- Info --
+txt_totalweight = txt_add("000", font_skyblue_20, 840+deltax, 349-24+deltay, 200, 60)
+txt_cabinalt = txt_add("000", font_skyblue_20, 840+deltax, 349+deltay, 200, 60)
+----------------------------------------------------------------------------------------------------------------------------------------------------------- Annunciator text --
+txt_annun1 = txt_add("WARNING", font_red_16, 778+deltax, 390+0*18+deltay, 300, 60)
+txt_annun2 = txt_add("CAUTION", font_orange_16, 778+deltax, 390+1*18+deltay, 300, 60)
+txt_annun3 = txt_add("PARKING", font_red_16, 778+deltax, 390+2*18+deltay, 300, 60)
+txt_annun4 = txt_add("AIRBRAKE", font_red_16, 778+deltax, 390+3*18+deltay, 300, 60)
+txt_annun5 = txt_add("AP DISC", font_gold_16, 778+deltax, 390+4*18+deltay, 300, 60)
+txt_annun6 = txt_add("LOW VAC", font_gold_16, 778+deltax, 390+5*18+deltay, 300, 60)
+txt_annun7 = txt_add("LOW VOLT", font_gold_16, 778+deltax, 390+6*18+deltay, 300, 60)
+txt_annun8 = txt_add("FUEL QTY", font_gold_16, 778+deltax, 390+7*18+deltay, 300, 60)
+txt_annun9 = txt_add("HYD PSI", font_gold_16, 778+deltax, 390+8*18+deltay, 300, 60)
+txt_annun10 = txt_add("ICE DTC", font_gold_16, 778+deltax, 390+9*18+deltay, 300, 60)
+txt_annun11 = txt_add("PITOT", font_gold_16, 862+deltax, 390+0*18+deltay, 300, 60)
+txt_annun12 = txt_add("CHARGE", font_gold_16, 862+deltax, 390+1*18+deltay, 300, 60)
+txt_annun13 = txt_add("CAB ALT", font_gold_16, 862+deltax, 390+2*18+deltay, 300, 60)
+txt_annun14 = txt_add("AP TRIM", font_gold_16, 862+deltax, 390+3*18+deltay, 300, 60)
+txt_annun15 = txt_add("XFEED", font_gold_16, 862+deltax, 390+4*18+deltay, 300, 60)
+txt_annun16 = txt_add("DOOR", font_gold_16, 862+deltax, 390+5*18+deltay, 300, 60)
+txt_annun17 = txt_add("EXT PWR", font_gold_16, 862+deltax, 390+6*18+deltay, 300, 60)
+txt_annun18 = txt_add("NO INV", font_gold_16, 862+deltax, 390+7*18+deltay, 300, 60)
+txt_annun19 = txt_add("FUEL PSI", font_gold_16, 862+deltax, 390+8*18+deltay, 300, 60)
+txt_annun20 = txt_add("OIL PSI", font_gold_16, 862+deltax, 390+9*18+deltay, 300, 60)
+txt_annun21 = txt_add("OIL TEMP", font_gold_16, 940+deltax, 390+0*18+deltay, 300, 60)
+txt_annun22 = txt_add("GENERATOR", font_gold_16, 940+deltax, 390+1*18+deltay, 300, 60)
+txt_annun23 = txt_add("CHIP", font_gold_16, 940+deltax, 390+2*18+deltay, 300, 60)
+txt_annun24 = txt_add("ENG FIRE", font_red_16, 940+deltax, 390+3*18+deltay, 300, 60)
+txt_annun25 = txt_add("REVERSE", font_gold_16, 940+deltax, 390+4*18+deltay, 300, 60)
+txt_annun26 = txt_add("INVERT", font_gold_16, 940+deltax, 390+5*18+deltay, 300, 60)
+txt_annun27 = txt_add("SEATBELT", font_gold_16, 940+deltax, 390+6*18+deltay, 300, 60)
+txt_annun28 = txt_add("", font_gold_16, 940+deltax, 390+7*18+deltay, 300, 60)
+txt_annun29 = txt_add("", font_gold_16, 940+deltax, 390+8*18+deltay, 300, 60)
+txt_annun30 = txt_add("", font_gold_16, 940+deltax, 390+9*18+deltay, 300, 60)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------ Map setup --
+status_map = 0
+zoomlevel = 10
+img_map_backdrop = img_add("map_backdrop.png", 0+deltax, 385+deltay, 511, 383) visible(img_map_backdrop, false)
+navmap = map_add(0+deltax,385+deltay,512,384,"OSM_MAPQUEST", zoomlevel)
+map_layer_ndb = map_add_nav_img_layer(navmap, "NDB", "map_ndb.png", -13, -13, 26, 26)
+map_layer_airp = map_add_nav_img_layer(navmap, "AIRP", "map_airport.png", -13, -13, 26, 26)
+map_layer_vor = map_add_nav_img_layer(navmap, "VOR", "map_vor.png", -13, -13, 26, 26)
+map_layer_fix = map_add_nav_img_layer(navmap, "FIX", "map_fix.png", -8, -8, 16, 16)
+map_layer_ndb_name = map_add_nav_txt_layer(navmap, "NDB", "NAME", font_darkslategrey_16, -100, -30, 200, 40)
+map_layer_ndb_freq = map_add_nav_txt_layer(navmap, "NDB", "FREQUENCY", font_darkslategrey_16, -50, 17, 100, 40)
+map_layer_airp_name = map_add_nav_txt_layer(navmap, "AIRP", "NAME", font_darkslategrey_16, -100, -36, 200, 40)
+map_layer_vor_name = map_add_nav_txt_layer(navmap, "VOR", "NAME", font_darkslategrey_16, -50, -36, 100, 40)
+map_layer_vor_freq = map_add_nav_txt_layer(navmap, "VOR", "FREQUENCY", font_darkslategrey_16, -50, 17, 100, 40)
+north_icon = img_add("map_northarrow.png", 15+deltax, 400+deltay, 30, 50)
+airplane_icon = img_add("map_airplane.png", 256-22+deltax, 576-22+deltay, 44, 44)
+visible(north_icon, false)
+visible(airplane_icon, false)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------- Frame image --
+img_add_fullscreen("eclipse_panel_backdrop.png")
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Autopilot LED --
+img_add("butt_LED_off.png", 1260, 460+4, 20, 40)
+img_add("butt_LED_off.png", 1410, 460+4, 20, 40)
+img_add("butt_LED_off.png", 1260, 460+48+4, 20, 40)
+img_add("butt_LED_off.png", 1410, 460+48+4, 20, 40)
+img_add("butt_LED_off.png", 1260, 460+96+4, 20, 40)
+img_add("butt_LED_off.png", 1410, 460+96+4, 20, 40)
+img_add("butt_LED_off.png", 1260, 460+144+4, 20, 40)
+img_add("butt_LED_off.png", 1410, 460+144+4, 20, 40)
+
+img_click_alt_arm = img_add("butt_LED_arm.png", 1410, 460+4, 20, 40)
+img_click_nav_arm = img_add("butt_LED_arm.png", 1410, 460+96+4, 20, 40)
+img_click_vs_arm = img_add("butt_LED_arm.png", 1260, 460+48+4, 20, 40)
+img_click_nav = img_add("butt_LED_on.png", 1410, 460+96+4, 20, 40)
+img_click_apr_arm = img_add("butt_LED_arm.png", 1410, 460+144+4, 20, 40)
+img_click_apr = img_add("butt_LED_on.png", 1410, 460+144+4, 20, 40)
+
+img_click_ap = img_add("butt_LED_on.png", 1260, 460+4, 20, 40)
+img_click_alt = img_add("butt_LED_on.png", 1410, 460+4, 20, 40)
+img_click_vs = img_add("butt_LED_on.png", 1260, 460+48+4, 20, 40)
+img_click_ias = img_add("butt_LED_on.png", 1410, 460+48+4, 20, 40)
+img_click_ias_arm = img_add("butt_LED_arm.png", 1410, 460+48+4, 20, 40)
+img_click_hdg = img_add("butt_LED_on.png", 1260, 460+96+4, 20, 40)
+
+img_click_yd = img_add("butt_LED_on.png", 1260, 460+144+4, 20, 40)
+--------------------------------------------------------------------------------------------------------------------------------------------------------- Button status init --
+
+status_avionics = 0
+status_battl = 0
+status_battr = 0
+status_genl = 0
+status_genr = 0
+status_bleed = 0
+status_seatbelt = 0
+status_icedetect = 0
+status_pitotheat = 0
+status_yd = 0
+
+status_hdg = 0
+status_alt = 0
+status_vs = 0
+
+status_flightplan_screen = false
+status_checklist = false
+status_active_checklist = 1
+status_active_radio = 0
+------------------------------------------------------------------------------------------------------------------------------------------------------------ Checklist images--
+img_checklist_01 = img_add("checklist_01.png",513+deltax,385+deltay,252,383)
+img_checklist_02 = img_add("checklist_02.png",513+deltax,385+deltay,252,383)
+img_checklist_03 = img_add("checklist_03.png",513+deltax,385+deltay,252,383)
+img_checklist_04 = img_add("checklist_04.png",513+deltax,385+deltay,252,383)
+img_checklist_05 = img_add("checklist_05.png",513+deltax,385+deltay,252,383)
+img_checklist_06 = img_add("checklist_06.png",513+deltax,385+deltay,252,383)
+img_checklist_07 = img_add("checklist_07.png",513+deltax,385+deltay,252,383)
+img_checklist_08 = img_add("checklist_08.png",513+deltax,385+deltay,252,383)
+img_checklist_09 = img_add("checklist_09.png",513+deltax,385+deltay,252,383)
+img_checklist_10 = img_add("checklist_10.png",513+deltax,385+deltay,252,383)
+img_checklist_11 = img_add("checklist_11.png",513+deltax,385+deltay,252,383)
+img_checklist_12 = img_add("checklist_12.png",513+deltax,385+deltay,252,383)
+
+group_checklist = group_add(img_checklist_01, img_checklist_02, img_checklist_03, img_checklist_04, img_checklist_05, img_checklist_06, img_checklist_07, img_checklist_08,
+                            img_checklist_09, img_checklist_10, img_checklist_11, img_checklist_12)
+
+visible(group_checklist, false)
+----------------------------------------------------------------------------------------------------------------------------------------------------------- Flightplan images--
+img_inop = img_add("inop.png",769+deltax,385+deltay,252,383) visible(img_inop, status_flightplan_screen)
+-------------------------------------------------------------------------------------------------------------------------------------------------------- Avionics off screen --
+img_screen_off1 = img_add("eclipse_screen_off.png",0+deltax,0+deltay,511,383)
+img_screen_off2 = img_add("eclipse_screen_off.png",513+deltax,0+deltay,511,383)
+img_screen_off3 = img_add("eclipse_screen_off.png",0+deltax,385+deltay,511,383)
+img_screen_off4 = img_add("eclipse_screen_off.png",513+deltax,385+deltay,511,383)
+
+group_screen_off = group_add(img_screen_off1, img_screen_off2, img_screen_off3, img_screen_off4)
+----------------------------------------------------------------------------------------------------------------------------------------------------------- Button callbacks --
+function PT_butt1() if status_battl == 0 then xpl_command("sim/electrical/battery_1_on") else xpl_command("sim/electrical/battery_1_off") end sound_play(sound_click) end
+function PT_butt2() if status_battr == 0 then xpl_command("sim/electrical/battery_2_on") else xpl_command("sim/electrical/battery_2_off") end sound_play(sound_click) end
+function PT_butt3() if status_genl == 0 then xpl_command("sim/electrical/generator_1_on") else xpl_command("sim/electrical/generator_1_off") end sound_play(sound_click) end
+function PT_butt4() if status_genr == 0 then xpl_command("sim/electrical/generator_2_on") else xpl_command("sim/electrical/generator_2_off") end sound_play(sound_click) end
+function PT_butt5() xpl_command("sim/systems/avionics_toggle") sound_play(sound_click) sound_play(sound_buzzer) end
+function PT_butt6() if status_bleed == 0 then xpl_command("sim/bleed_air/bleed_air_auto") else xpl_command("sim/bleed_air/bleed_air_off") end sound_play(sound_click) end
+function PT_butt7() xpl_command("sim/electrical/GPU_toggle") sound_play(sound_click) end
+function PT_butt8() if status_icedetect == 0 then xpl_command("sim/ice/detect_on") else xpl_command("sim/ice/detect_off") end sound_play(sound_click) end
+function PT_butt9() xpl_command("sim/ice/anti_ice_toggle") sound_play(sound_click) end
+function PT_butt10() xpl_command("sim/starters/engage_starter_1") sound_play(sound_click) end -- was sim/cockpit2/engine/actuators/ignition_key[0]
+function PT_butt11() xpl_command("sim/starters/engage_starter_2") sound_play(sound_click) end -- was sim/cockpit2/engine/actuators/ignition_key[1]
+function PT_butt12() xpl_command("sim/lights/nav_lights_toggle") sound_play(sound_click) end
+function PT_butt13() xpl_command("sim/lights/beacon_lights_toggle") sound_play(sound_click) end
+function PT_butt14() xpl_command("sim/lights/strobe_lights_toggle") sound_play(sound_click) end
+function PT_butt15() xpl_command("sim/lights/landing_lights_toggle") sound_play(sound_click) end
+function PT_butt16() xpl_command("sim/lights/taxi_lights_toggle") sound_play(sound_click) end
+function PT_butt17() xpl_dataref_write("sim/cockpit/switches/fasten_seat_belts", "INT", fif(status_seatbelt == 0, 1, 0) ) sound_play(sound_seatbelt) end
+function PT_butt18() xpl_dataref_write("sim/cockpit/switches/pitot_heat_on", "INT", fif(status_pitotheat == 0, 1, 0) ) sound_play(sound_click) end
+
+function PT_butt_map() if status_map == 0 then status_map = 1 else status_map = 0 end sound_play(sound_softclick) end
+function PT_butt_in() if zoomlevel == 14 then else zoomlevel = zoomlevel+1 map_zoom(navmap, zoomlevel) end sound_play(sound_softclick) end
+function PT_butt_out() if zoomlevel == 8 then else zoomlevel = zoomlevel-1 map_zoom(navmap, zoomlevel) end sound_play(sound_softclick) end
+
+function PT_butt_nav1() xpl_dataref_write("sim/cockpit2/radios/actuators/HSI_source_select_pilot", "INT", 0) sound_play(sound_softclick) end
+function PT_butt_nav2() xpl_dataref_write("sim/cockpit2/radios/actuators/HSI_source_select_pilot", "INT", 1) sound_play(sound_softclick) end
+function PT_butt_gps() xpl_dataref_write("sim/cockpit2/radios/actuators/HSI_source_select_pilot", "INT", 2) sound_play(sound_softclick) end
+
+function PT_update_checklist()
+    if status_checklist == false or status_avionics == 0 then 
+		visible(group_checklist, false)
+    else
+	    visible(img_checklist_01, status_active_checklist == 1)
+		visible(img_checklist_02, status_active_checklist == 2)
+		visible(img_checklist_03, status_active_checklist == 3)
+		visible(img_checklist_04, status_active_checklist == 4)
+		visible(img_checklist_05, status_active_checklist == 5)
+		visible(img_checklist_06, status_active_checklist == 6)
+		visible(img_checklist_07, status_active_checklist == 7)
+		visible(img_checklist_08, status_active_checklist == 8)
+		visible(img_checklist_09, status_active_checklist == 9)
+		visible(img_checklist_10, status_active_checklist == 10)
+		visible(img_checklist_11, status_active_checklist == 11)
+		visible(img_checklist_12, status_active_checklist == 12)
+    end
+end
+
+function PT_butt_chk() 
+    status_checklist = not status_checklist
+	PT_update_checklist()
+    sound_play(sound_softclick) 
+end
+
+function PT_butt_chk_left()
+    status_active_checklist = status_active_checklist-1 if status_active_checklist < 1 then status_active_checklist = 1 end
+    PT_update_checklist()
+    sound_play(sound_softclick)
+end
+
+function PT_butt_chk_right()
+    status_active_checklist = status_active_checklist+1 if status_active_checklist > 12 then status_active_checklist = 12 end
+    PT_update_checklist()
+    sound_play(sound_softclick)
+end
+
+function PT_butt_plan() 
+    if status_flightplan_screen == false or status_avionics == 0 then 
+        status_flightplan_screen = true 
+    else 
+        status_flightplan_screen = false 
+    end 
+    visible(img_inop, status_flightplan_screen) 
+    sound_play(sound_softclick) 
+end
+
+function PT_butt_plan_left()
+end
+function PT_butt_plan_right()
+end
+
+function PT_butt_ap() xpl_command("sim/autopilot/fdir_servos_toggle") sound_play(sound_softclick) end
+function PT_butt_alt() xpl_command("sim/autopilot/altitude_hold") sound_play(sound_softclick) end
+function PT_butt_vs() xpl_command("sim/autopilot/vertical_speed") sound_play(sound_softclick) end
+function PT_butt_ias() xpl_command("sim/autopilot/autothrottle_toggle") sound_play(sound_softclick) end
+function PT_butt_hdg() xpl_command("sim/autopilot/heading") sound_play(sound_softclick) end
+function PT_butt_nav() xpl_command("sim/autopilot/NAV") sound_play(sound_softclick) end
+function PT_butt_yd() s=0 if status_yd == 0 then s=1 end  xpl_dataref_write("sim/cockpit2/switches/yaw_damper_on", "INT", s) sound_play(sound_softclick) end
+function PT_butt_apr() xpl_command("sim/autopilot/approach") sound_play(sound_softclick) end
+------------------------------------------------------------------------------------------------------------------------------------------------------------ Button an Dials --
+switch_battl      = switch_add("batt_left_on.png", "batt_left_off.png", 36,56,50,75, PT_butt1)
+switch_battr      = switch_add("batt_right_on.png", "batt_right_off.png", 106,56,50,75, PT_butt2)
+switch_lgen       = switch_add("gen_left_on.png", "gen_left_off.png", 36,56+88,50,75, PT_butt3)
+switch_rgen       = switch_add("gen_right_on.png", "gen_right_off.png", 106,56+88,50,75, PT_butt4)
+switch_avion      = switch_add("avionics_on.png", "avionics_off.png", 1284,56,50,75, PT_butt5)
+switch_bleed      = switch_add("bleed_on.png", "bleed_off.png", 36,56+176+16,50,75, PT_butt6)
+switch_gpu        = switch_add("gpu_on.png", "gpu_off.png", 106,56+176+16,50,75, PT_butt7)
+switch_icedetect  = switch_add("ice_detect_on.png", "ice_detect_off.png", 36,56+264+16,50,75, PT_butt8)	
+switch_iceon      = switch_add("ice_protect_on.png", "ice_protect_off.png", 106,56+264+16,50,75, PT_butt9)
+switch_engstartl  = switch_add("start_left_on.png", "start_left_off.png", 36,56+352+32,50,75, PT_butt10)
+switch_engstartr  = switch_add("start_right_on.png", "start_right_off.png", 106,56+352+32,50,75, PT_butt11)
+switch_navigation = switch_add("nav_lts_on.png", "nav_lts_off.png", 1284,56+88,50,75, PT_butt12)
+switch_beacon     = switch_add("beacon_lts_on.png", "beacon_lts_off.png", 1354,56+88,50,75, PT_butt13)
+switch_strobe     = switch_add("strobe_lts_on.png", "strobe_lts_off.png", 1284,56+176+16,50,75, PT_butt14)
+switch_landing    = switch_add("land_lts_on.png", "land_lts_off.png", 1354,56+176+16,50,75, PT_butt15)
+switch_taxi       = switch_add("taxi_lts_on.png", "taxi_lts_off.png", 1354,56,50,75, PT_butt16)
+switch_seatbelt   = switch_add("seat_belt_on.png", "seat_belt_off.png", 1284,56+264+16,50,75, PT_butt17)
+switch_pitotheat  = switch_add("pitotheat_on.png", "pitotheat_off.png", 1354,56+264+16,50,75, PT_butt18)
+
+button_add("zoomin_button_on.png", "zoomin_button_off.png", 206+12, 843, 80, 60, PT_butt_in)
+button_add("map_button_on.png", "map_button_off.png", 206+12+72, 843, 80, 60, PT_butt_map)
+button_add("zoomout_button_on.png", "zoomout_button_off.png", 206+12+2*72, 843, 80, 60, PT_butt_out)
+
+button_add("nav1_button_on.png", "nav1_button_off.png", 206-12+4*72, 843, 80, 60, PT_butt_nav1)
+button_add("nav2_button_on.png", "nav2_button_off.png", 206-12+5*72, 843, 80, 60, PT_butt_nav2)
+button_add("gps_button_on.png", "gps_button_off.png", 206-12+6*72, 843, 80, 60, PT_butt_gps)
+
+button_add("left_button_on.png", "left_button_off.png", 462-12+4*72, 843, 80, 60, PT_butt_chk_left)
+button_add("chk_button_on.png", "chk_button_off.png", 462-12+5*72, 843, 80, 60, PT_butt_chk)
+button_add("right_button_on.png", "right_button_off.png", 462-12+6*72, 843, 80, 60, PT_butt_chk_right)
+
+button_add("left_button_on.png", "left_button_off.png", 718-12+4*72, 843, 80, 60, PT_butt_plan_left)
+button_add("plan_button_on.png", "plan_button_off.png", 718-12+5*72, 843, 80, 60, PT_butt_plan)
+button_add("right_button_on.png", "right_button_off.png", 718-12+6*72, 843, 80, 60, PT_butt_plan_right)
+
+button_add("ap_button_on.png", "ap_button_off.png", 1270, 460, 80, 60, PT_butt_ap)
+button_add("alt_button_on.png", "alt_button_off.png", 1270+72, 460, 80, 60, PT_butt_alt)
+button_add("vs_button_on.png", "vs_button_off.png", 1270, 460+48, 80, 60, PT_butt_vs)
+button_add("ias_button_on.png", "ias_button_off.png", 1270+72, 460+48, 80, 60, PT_butt_ias)
+button_add("hdg_button_on.png", "hdg_button_off.png", 1270, 460+96, 80, 60, PT_butt_hdg)
+button_add("nav_button_on.png", "nav_button_off.png", 1270+72, 460+96, 80, 60, PT_butt_nav)
+button_add("yd_button_on.png", "yd_button_off.png", 1270, 460+144, 80, 60, PT_butt_yd)
+button_add("apr_button_on.png", "apr_button_off.png", 1270+72, 460+144, 80, 60, PT_butt_apr)
+
+
+function PT_dial_altitude(direction) xpl_dataref_write("sim/cockpit/autopilot/altitude", "FLOAT", math.floor(status_alt/100)*100+direction*100) end
+
+ --xpl_dataref_write("sim/cockpit2/autopilot/vvi_dial_fpm", "FLOAT", status_vs+direction*10) 
+ -- this didn't work thus below
+ 
+function PT_dial_verticalspeed(direction)
+if direction == 1 then
+	xpl_command ( "sim/autopilot/vertical_speed_up")
+	elseif direction == -1 then
+		xpl_command ( "sim/autopilot/vertical_speed_down" )
+	end
+		xpl_command ( "sim/autopilot/vertical_speed_up", false )
+		xpl_command ( "sim/autopilot/vertical_speed_down", false)
+end
+
+function PT_dial_heading(direction) xpl_dataref_write("sim/cockpit/autopilot/heading_mag", "FLOAT", status_hdg+direction) end
+function PT_dial_course(direction)
+status_crs=status_crs+direction
+if status_crs > 360 then
+status_crs = status_crs - 360
+elseif status_crs < 0 then
+status_crs=status_crs + 360
+end
+xpl_dataref_write("sim/cockpit2/radios/actuators/hsi_obs_deg_mag_pilot", "FLOAT", status_crs) 
+end
+function PT_dial_speed(direction) xpl_dataref_write("sim/cockpit/autopilot/airspeed", "FLOAT", status_ias+direction) end
+function PT_dial_barometer(direction) xpl_dataref_write("sim/cockpit/misc/barometer_setting", "FLOAT", status_barometer+direction/100) end
+
+function PT_dial_select(direction) 
+    status_active_radio = status_active_radio + direction
+    if status_active_radio < 1 then status_active_radio = 18 end
+    if status_active_radio > 18 then status_active_radio = 1 end
+    
+    visible(select_com1_freq, status_active_radio == 1)
+	visible(select_com1_dec , status_active_radio == 2)
+	visible(select_com2_freq, status_active_radio == 3)
+	visible(select_com2_dec , status_active_radio == 4)
+	
+	visible(select_nav1_freq, status_active_radio == 5)
+	visible(select_nav1_dec , status_active_radio == 6)
+	visible(select_nav2_freq, status_active_radio == 7)
+	visible(select_nav2_dec , status_active_radio == 8)
+	
+	visible(select_adf1_dec1, status_active_radio == 9)
+	visible(select_adf1_dec2, status_active_radio == 10)
+	visible(select_adf1_dec3, status_active_radio == 11)
+	
+	visible(select_adf2_dec1, status_active_radio == 12)
+	visible(select_adf2_dec2, status_active_radio == 13)
+	visible(select_adf2_dec3, status_active_radio == 14)
+	
+	visible(select_xpdr_dec1, status_active_radio == 15)
+	visible(select_xpdr_dec2, status_active_radio == 16)
+	visible(select_xpdr_dec3, status_active_radio == 17)
+	visible(select_xpdr_dec4, status_active_radio == 18)
+	
+end
+
+function PT_dial_set(direction) 
+    if status_active_radio == 1 then if direction == 1 then xpl_command("sim/radios/actv_com1_coarse_up") else xpl_command("sim/radios/actv_com1_coarse_down") end end
+    if status_active_radio == 2 then if direction == 1 then xpl_command("sim/radios/actv_com1_fine_up") else xpl_command("sim/radios/actv_com1_fine_down") end end
+    if status_active_radio == 3 then if direction == 1 then xpl_command("sim/radios/actv_com2_coarse_up") else xpl_command("sim/radios/actv_com2_coarse_down") end end
+    if status_active_radio == 4 then if direction == 1 then xpl_command("sim/radios/actv_com2_fine_up") else xpl_command("sim/radios/actv_com2_fine_down") end end
+    
+    if status_active_radio == 5 then if direction == 1 then xpl_command("sim/radios/actv_nav1_coarse_up") else xpl_command("sim/radios/actv_nav1_coarse_down") end end
+    if status_active_radio == 6 then if direction == 1 then xpl_command("sim/radios/actv_nav1_fine_up") else xpl_command("sim/radios/actv_nav1_fine_down") end end
+    if status_active_radio == 7 then if direction == 1 then xpl_command("sim/radios/actv_nav2_coarse_up") else xpl_command("sim/radios/actv_nav2_coarse_down") end end
+    if status_active_radio == 8 then if direction == 1 then xpl_command("sim/radios/actv_nav2_fine_up") else xpl_command("sim/radios/actv_nav2_fine_down") end end
+    
+    if status_active_radio == 9 then if direction == 1 then xpl_command("sim/radios/actv_adf1_hundreds_up") else xpl_command("sim/radios/actv_adf1_hundreds_down") end end
+    if status_active_radio == 10 then if direction == 1 then xpl_command("sim/radios/actv_adf1_tens_up") else xpl_command("sim/radios/actv_adf1_tens_down") end end
+    if status_active_radio == 11 then if direction == 1 then xpl_command("sim/radios/actv_adf1_ones_up") else xpl_command("sim/radios/actv_adf1_ones_down") end end
+    
+    if status_active_radio == 12 then if direction == 1 then xpl_command("sim/radios/actv_adf2_hundreds_up") else xpl_command("sim/radios/actv_adf2_hundreds_down") end end
+    if status_active_radio == 13 then if direction == 1 then xpl_command("sim/radios/actv_adf2_tens_up") else xpl_command("sim/radios/actv_adf2_tens_down") end end
+    if status_active_radio == 14 then if direction == 1 then xpl_command("sim/radios/actv_adf2_ones_up") else xpl_command("sim/radios/actv_adf2_ones_down") end end
+    
+    if status_active_radio == 15 then if direction == 1 then xpl_command("sim/transponder/transponder_thousands_up") else xpl_command("sim/transponder/transponder_thousands_down") end end
+    if status_active_radio == 16 then if direction == 1 then xpl_command("sim/transponder/transponder_hundreds_up") else xpl_command("sim/transponder/transponder_hundreds_down") end end
+    if status_active_radio == 17 then if direction == 1 then xpl_command("sim/transponder/transponder_tens_up") else xpl_command("sim/transponder/transponder_tens_down") end end
+    if status_active_radio == 18 then if direction == 1 then xpl_command("sim/transponder/transponder_ones_up") else xpl_command("sim/transponder/transponder_ones_down") end end
+end
+
+dial1 = dial_add("", 20, 596, 152, 48, PT_dial_altitude)
+dial2 = dial_add("", 20, 596+1*48, 152, 48, PT_dial_verticalspeed)
+dial3 = dial_add("", 20, 596+2*48, 152, 48, PT_dial_heading)
+dial4 = dial_add("", 20, 596+3*48, 152, 48, PT_dial_course)
+dial5 = dial_add("", 20, 596+4*48, 152, 48, PT_dial_speed) 
+dial6 = dial_add("", 1440-152-20, 596+2*48, 152, 48, PT_dial_select)
+dial7 = dial_add("", 1440-152-20, 596+3*48, 152, 48, PT_dial_set)
+dial8 = dial_add("", 1440-152-20, 596+4*48, 152, 48, PT_dial_barometer) 
+------------------------------------------------------------------------------------------------------------------------------------------------------------ Button get data --
+function PT_button(battery,avion,generator,bleed,gpu,icedetect,iceprotect,engstart,beacon,strobe,landing,taxi,navigation,seatbelt,pitotheat) 
+
+	-- When avionics is turned off, show the 'red crosses' on all four squares
+	visible(group_screen_off, avion == 0)
+	print(avion)
+    -- Update switch states
+	switch_set_state(switch_avion,      avion == 0)
+	switch_set_state(switch_battl,      battery[1] == 0)
+	switch_set_state(switch_battr,      battery[2] == 0)
+	switch_set_state(switch_lgen,       generator[1] == 0)
+	switch_set_state(switch_rgen,       generator[2] == 0)
+	switch_set_state(switch_bleed,      bleed == 0)
+	switch_set_state(switch_gpu,        gpu == 0)
+	switch_set_state(switch_icedetect,  icedetect == 0)
+	switch_set_state(switch_iceon,      iceprotect == 0)
+	switch_set_state(switch_engstartl,  engstart[1] < 4)
+	switch_set_state(switch_engstartr,  engstart[2] < 4)
+	switch_set_state(switch_navigation, navigation == 0)
+	switch_set_state(switch_beacon,     beacon == 0)
+	switch_set_state(switch_strobe,     strobe == 0)
+	switch_set_state(switch_landing,    landing == 0)
+	switch_set_state(switch_taxi,       taxi == 0)
+	switch_set_state(switch_seatbelt,   seatbelt == 0)
+	switch_set_state(switch_pitotheat,  pitotheat == 0)
+	
+	-- Cache data from X-plane internally
+    status_avionics = avion
+	status_battl = battery[1]
+    status_battr = battery[2]
+    status_genl = generator[1]
+    status_genr = generator[2]
+	status_bleed = bleed	
+	status_seatbelt = seatbelt
+    status_icedetect = icedetect
+    status_pitotheat = pitotheat
+	
+    -- Update checklist
+	PT_update_checklist()
+end
+----------------------------------------------------------------------------------------------------------------------------------------------------------- Atitude get data --
+function PT_atitude(roll, pitch, verticalspeed, vs_tgt, rad_alt)    -- add target bug on 
+
+--vs_status= vs_tgt
+    img_rotate(img_horizon  , roll * -1)
+    pitch = var_cap(pitch,-60,60)
+    radial = math.rad(roll * -1)
+    x = -(math.sin(radial) * pitch * 4)
+    y = (math.cos(radial) * pitch * 4)
+    move(img_horizon, -144+x+deltax, -192+y+deltay, nil, nil)
+    img_rotate(img_roll_indicator  , roll * -1)
+    if verticalspeed > 5200 then verticalspeed = 4200 end
+    if verticalspeed < -5200 then verticalspeed = -4200 end
+      if vs_tgt > 5000 then vs_tgt = 5000 end
+    if vs_tgt < -5000 then vs_tgt = -5000 end
+    if math.abs(verticalspeed) <= 1000  then
+    move(img_vertical_speed_indicator, nil, 189+deltay- 1- verticalspeed *38/1000, nil, nil)
+    elseif verticalspeed > 1000 then
+     move(img_vertical_speed_indicator, nil, 189+deltay- 1 - 38-(verticalspeed-1000)*75/4000, nil, nil)
+     else	
+        move(img_vertical_speed_indicator, nil, 189+deltay- 1 + 38 -(verticalspeed+1000)*75/4000, nil, nil)
+    end
+    if math.abs(vs_tgt) <= 1000  then
+    move(img_vertical_speed_target, nil, 189+deltay-4 - vs_tgt *38/1000, nil, nil)
+    elseif vs_tgt > 1000 then
+     move(img_vertical_speed_target, nil, 189+deltay- 4  - 38-(vs_tgt-1000)*75/4000, nil, nil)
+     else	
+        move(img_vertical_speed_target, nil, 189+deltay- 4 + 38 -(vs_tgt+1000)*75/4000, nil, nil)
+    end
+    if verticalspeed == 0 then verticalspeed=0.0001 end
+     txt_set(txt_vs_act, verticalspeed/ math.abs(verticalspeed) * math.floor(math.abs(verticalspeed/100) )*100 )
+    
+     visible( txt_ra, rad_alt <= 2500 and rad_alt > 0)
+    
+     txt_set(txt_ra,string.format("RA %0d",(math.floor(rad_alt/10)*10)))
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------------- Airspeed get data --
+function PT_airspeed(airspeed,ias)
+print('im called')
+    if airspeed < 0 then airspeed = 0 end
+    move(img_speed0, nil, -0*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed1, nil, -1*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed2, nil, -2*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed3, nil, -3*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed4, nil, -4*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed5, nil, -5*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed6, nil, -6*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed7, nil, -7*384-192+airspeed*48/10+deltay, nil, nil)
+    move(img_speed8, nil, -8*384-192+airspeed*48/10+deltay, nil, nil)
+    txt_set(txt_airspeed,  var_round(airspeed,0) )
+    move(img_ias_bug, nil, 172-ias*48/10 + airspeed*48/10 + deltay , nil, nil)
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------- Altimeter get data --
+function PT_altimeter(altitude, pressure,alt)
+    status_barometer = pressure
+    if altitude < 0 then altitude = 0 end
+    move(img_altitude0, nil, -0*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude1, nil, -1*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude2, nil, -2*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude3, nil, -3*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude4, nil, -4*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude5, nil, -5*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude6, nil, -6*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude7, nil, -7*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude8, nil, -8*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude9, nil, -9*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude10, nil, -10*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude11, nil, -11*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude12, nil, -12*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude13, nil, -13*960-768+altitude*48/100+deltay, nil, nil)
+    move(img_altitude14, nil, -14*960-768+altitude*48/100+deltay, nil, nil)
+    h = var_round(altitude - math.floor(altitude/1000)*1000, 0)
+    txt_set(txt_flightlevel,  string.format("%02i", math.floor(altitude/1000,0)) ) 
+    h = altitude - math.floor(altitude/1000)*1000
+    txt_set(txt_altitude_hundred,  string.format("%03i", math.floor(h/10,0)*10) )  
+	txt_set(txt_inhg, string.format("%.02d.%.02d", pressure, (pressure*100)%100 ) ) 
+	txt_set(txt_inhg_atitude, string.format("%.02d.%.02d".." IN", pressure, (pressure*100)%100 ) )
+	move(img_alt_bug, nil, 172-alt*48/100 + altitude*48/100 + deltay, nil, nil)   
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------ Map get data and show --
+function PT_map(latitude, longitude, heading, showmap)
+	visible(img_map_backdrop, status_map == 1)
+	visible(north_icon, status_map == 1)
+	visible(airplane_icon, status_map == 1)
+	visible(navmap, status_map == 1)
+    if status_map == 1 then
+        map_goto(navmap, longitude, latitude)
+        img_rotate(airplane_icon, heading)  
+    end
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------- HSI get data --
+function PT_hsi(heading,mode,crs,nav1hdef,nav2hdef,gpshdef,nav1vdef,nav2vdef,gpsvdef,nav1display,nav2display, glideslopeflag, hdg, displayhils, windspeed, winddir, gscaptured, groundspeed, tas)
+
+nav1vdef = var_cap ( nav1vdef , -2.5 , 2.5 )
+nav2vdef = var_cap ( nav2vdef , -2.5 , 2.5 )
+    status_crs = crs
+    if mode < 1 then dh = nav1hdef*40 dv = nav1vdef*40 end
+    if mode > 0 and mode < 2 then dh = nav2hdef*40 dv = nav2vdef*40 end
+    if mode > 1 then dh = gpshdef*40 dv = gpshdef*40 end
+    if displayhils > 0 then
+        move(img_ils_horizontal, 241+dh+deltax, nil, nil, nil)
+    else
+        move(img_ils_horizontal, 2000+deltax, nil, nil, nil)
+    end
+    if glideslopeflag < 1 then
+        move(img_ils_vertical, nil, 177+dv+deltay, nil, nil)
+    else
+        move(img_ils_vertical, nil, 2000+deltay, nil, nil)
+    end
+
+    img_rotate(img_hsi_rose, -heading)
+    
+    if mode < 1 then 
+        dh = nav1hdef*40 * math.cos((-heading+crs)*math.pi/180)
+        dv = nav1hdef*40 * math.sin((-heading+crs)*math.pi/180)
+        dm = nav1vdef*40
+    end
+    if mode > 0 and mode < 2 then 
+        dh = nav2hdef*40 * math.cos((-heading+crs)*math.pi/180)
+        dv = nav2hdef*40 * math.sin((-heading+crs)*math.pi/180)
+        dm = nav2vdef*40
+    end
+    if mode > 1 then 
+        dh = gpshdef*40 * math.cos((-heading+crs)*math.pi/180)
+        dv = gpshdef*40 * math.sin((-heading+crs)*math.pi/180)
+    end
+    if nav1display > 0 or nav2display > 0 then
+        move(img_middle_needle, 256-8/2+dh+deltax, 576-106/2+dv+deltay, nil, nil)
+        img_rotate(img_middle_needle, -heading+crs)
+        
+    else
+        move(img_middle_needle, 2000+deltax, 2000+deltay, nil, nil)
+    end
+    
+    img_rotate(img_hsi_needle, -heading+crs)
+--    
+--    dv = 157 * math.cos((-heading+hdg)*math.pi/180)--increased radius to uncover 5 degree tic marls 20 degrees left
+--    dh = 157 * math.sin((-heading+hdg )*math.pi/180)--same as above
+--    move(img_heading_bug, 256-20+dh+deltax, 576-20-dv+deltay, nil, nil)
+    img_rotate(img_heading_bug1, -heading+hdg)
+    
+	txt_set(txt_crs, string.format("%03d" , math.floor(crs)) ) -- format for leading zeros for crs
+	txt_set(txt_hdg, string.format("%03d" , math.floor(hdg)) ) -- format for leading zeros for hdg
+	if mode == 0 then txt_set(txt_nav_mode, "NAV1" ) end      
+	if mode == 1 then txt_set(txt_nav_mode, "NAV2" ) end      
+	if mode == 2 then txt_set(txt_nav_mode, "GPS" ) end
+	
+	img_rotate(img_wind_rose_arrow, -heading+winddir-180)--fix wind direction it was reversed
+	--winddir=winddir-180
+	--if winddir < 0 then winddir= winddir + 360 end
+	txt_set(txt_wind_speed,string.format("%03d/%02d",math.floor(winddir), math.floor(windspeed))  )  
+		txt_set(txt_gs,string.format("GS  %03d",math.floor(groundspeed*1.94384))  )
+		txt_set(txt_tas,string.format("TAS %03d",math.floor(tas*1.94384))  )
+	
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Radio get data -- 
+function PT_radio(com1,com2,nav1,nav2,adf1,adf2,transponder)	
+  	txt_set(com1txt,  string.format("%d.%.02d",com1/100, com1%100) )  
+  	txt_set(com2txt,  string.format("%d.%.02d",com2/100, com2%100) )
+  	txt_set(nav1txt,  string.format("%d.%.02d",nav1/100, nav1%100) )
+  	txt_set(nav2txt,  string.format("%d.%.02d",nav2/100, nav2%100) )
+	if var_round(adf1,0) == 0 then adf1txt = "----" end
+	if var_round(adf2,0) == 0 then adf2txt = "----" end
+	txt_set(adf1txt,  var_round(adf1,0) )   
+	txt_set(adf2txt,  var_round(adf2,0) ) 
+	txt_set(xpntxt,  var_round(transponder,0) )
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------- OAT get data -- 
+function PT_oat(temp, icewarn)
+	t = var_round(temp,0)
+	txt_set(txt_oat,  string.format("OAT ".."%02d",t).."C" )    
+end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Gear get data -- 
+function PT_gear(geardata)
+    visible(img_gear_up_nose, false)
+    visible(img_gear_transit_nose, false)
+    visible(img_gear_down_nose, false)
+    
+    visible(img_gear_up_left, false)
+    visible(img_gear_transit_left, false)
+    visible(img_gear_down_left, false)
+    
+    visible(img_gear_up_right, false)
+    visible(img_gear_transit_right, false)
+    visible(img_gear_down_right, false)
+    
+    if geardata[1] < 0.01 then visible(img_gear_up_nose, true) end
+    if geardata[1] < 0.99 and geardata[1] > 0.01 then visible(img_gear_transit_nose, true) end
+    if geardata[1] > 0.99 then visible(img_gear_down_nose, true) end
+
+	if geardata[2] < 0.01 then visible(img_gear_up_left, true) end
+    if geardata[2] < 0.99 and geardata[2] > 0.01 then visible(img_gear_transit_left, true) end
+    if geardata[2] > 0.99 then visible(img_gear_down_left, true) end
+
+	if geardata[3] < 0.01 then visible(img_gear_up_right, true) end		
+    if geardata[3] < 0.99 and geardata[3] > 0.01 then visible(img_gear_transit_right, true) end
+    if geardata[3] > 0.99 then visible(img_gear_down_right, true) end 
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------- Autopilot get data -- 
+function PT_autopilot(hdg, alt, vs, ias, apap, apalt, apvs, apias, aphdg, apnav, apapr, apbc, apyd, loc_armed, gs_status, at_enabled)
+    status_alt = alt
+    status_vs = vs
+    status_hdg = hdg
+    status_ias = ias
+    status_yd = apyd 
+	
+    visible(img_altan, apalt == 6)
+    visible(img_click_alt, apalt == 6)
+    visible(img_alt_arm, apalt == 5 or apalt == 4)
+    visible(img_altan_arm, apalt == 5 or apalt == 4)
+	 visible(img_click_ias_arm, apias == 1 )
+	 visible(img_spdan_arm, apias == 1 )
+    visible(img_click_ias, apias == 2 )
+    visible(img_spdan, apias == 2 )
+    visible(img_click_vs_arm, apvs== 1)
+    visible(img_vsan_arm, apvs== 1)
+    visible(img_click_vs, apvs==2)
+    visible(img_vsan, apvs==2)
+    visible(img_apan, apap==2)
+    visible(img_fdan, apap> 0)
+    visible(img_click_hdg, aphdg > 0)
+    visible(img_hdgan, aphdg > 0)
+    visible(img_click_nav_arm, apnav == 1)
+    visible(img_navan_arm, apnav == 1)
+    visible(img_click_nav, apnav == 2)
+    visible(img_navan, apnav == 2)
+    visible(img_ydan, apyd > 0)
+    visible(img_click_apr_arm, apapr == 1)
+    visible(img_apran_arm, apapr == 1)
+    visible(img_locan_arm, loc_armed == 1)
+    visible(img_click_apr, apapr == 2)
+    visible(img_apran, apapr == 2)
+    visible(img_locan, apapr == 2)
+    visible(img_gsan_arm, gs_status == 1)
+    visible(img_gsan, gs_status == 2)
+    visible (img_athan, at_enabled==1)
+    
+    txt_set(txt_ias, var_round(ias,0) )
+    txt_set(txt_alt, var_round(alt,0) )
+    txt_set(txt_vs, var_round(vs,0) )
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------ Engine get data -- 
+function PT_engine(n1, itt, fuelflow, n2, oilpress, oiltemp)
+    ff1 = fuelflow[1]*3600/0.453
+    ff2 = fuelflow[2]*3600/0.453
+    viewport_rect(img_n1_left, 532+deltax, 32+(n1_max-n1[1])*125/n1_max+deltay, 12, 125)
+    viewport_rect(img_n1_right, 608+deltax, 32+(n1_max-n1[2])*125/n1_max+deltay, 12, 125)
+    viewport_rect(img_itt_left, 532+128+deltax, 32+(itt_max-itt[1])*125/itt_max+deltay, 12, 125)
+    viewport_rect(img_itt_right, 608+128+deltax, 32+(itt_max-itt[2])*125/itt_max+deltay, 12, 125)
+    viewport_rect(img_fuelflow_left, 532+256+deltax, 32+(fuelflow_max-ff1)*125/fuelflow_max+deltay, 12, 125)
+    viewport_rect(img_fuelflow_right, 608+256+deltax, 32+(fuelflow_max-ff2)*125/fuelflow_max+deltay, 12, 125)
+    viewport_rect(img_n2_left, 532+384+deltax, 32+(n2_max-n2[1])*125/n2_max+deltay, 12, 125)
+    viewport_rect(img_n2_right, 608+384+deltax, 32+(n2_max-n2[2])*125/n2_max+deltay, 12, 125)
+    viewport_rect(img_oilpress_left, 532+deltax, 32+192+(oilpress_max-oilpress[1])*125/oilpress_max+deltay, 12, 125)
+    viewport_rect(img_oilpress_right, 608+deltax, 32+192+(oilpress_max-oilpress[2])*125/oilpress_max+deltay, 12, 125)
+    viewport_rect(img_oiltemp_left, 532+128+deltax, 32+192+(oiltemp_max-oiltemp[1])*125/oiltemp_max+deltay, 12, 125)
+    viewport_rect(img_oiltemp_right, 608+128+deltax, 32+192+(oiltemp_max-oiltemp[2])*125/oiltemp_max+deltay, 12, 125)
+--    
+    txt_set(txt_n1_left, var_round(n1[1],0) )
+    txt_set(txt_n1_right, var_round(n1[2],0) )
+    txt_set(txt_itt_left, var_round(itt[1],0) )
+    txt_set(txt_itt_right, var_round(itt[2],0) )
+    txt_set(txt_fuelflow_left, var_round(ff1,0) )
+    txt_set(txt_fuelflow_right, var_round(ff2,0) )
+    txt_set(txt_n2_left, var_round(n2[1],0) )
+    txt_set(txt_n2_right, var_round(n2[2],0) )
+    txt_set(txt_oilpress_left, var_round(oilpress[1],0) )
+    txt_set(txt_oilpress_right, var_round(oilpress[2],0) )
+    txt_set(txt_oiltemp_left, var_round(oiltemp[1],0) )
+    txt_set(txt_oiltemp_right, var_round(oiltemp[2],0) )
+end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Info get data -- 
+function PT_info(cabinalt, totalweight)
+	txt_set(txt_totalweight, var_round(totalweight,0) )
+	txt_set(txt_cabinalt, var_round(cabinalt,0) )
+end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Trim get data --
+function PT_trim(aileron,rudder,elevator)
+	move(img_rudder_trim, 593+rudder*62+deltax, 622+deltay , nil, nil)
+	move(img_aileron_trim, 593+aileron*62+deltax, 674+deltay , nil, nil)
+	move(img_pitch_trim, 715+deltax, 667-elevator*62+deltay, nil, nil)
+end
+---------------------------------------------------------------------------------------------------------------------------------------------------------- Fuel qty get data --
+function PT_fuel(fuelqty)
+	fueldelta = fuelqty/fuelcapacity
+	fueldelta = var_cap(fueldelta, 0, 1)
+    move(img_fuel_qty, 531+fueldelta*200+deltax, 414+deltay , nil, nil)
+    txt_set(txt_fuel_qty, var_round(fuelqty,0) )
+end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------- Amps get data --
+function PT_genamps(genamps)
+    txt_set(txt_bus_load_left, math.floor(genamps[1]) )
+    txt_set(txt_bus_load_right, math.floor(genamps[2]) )
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Volts get data --
+function PT_busvolts(busvolts)
+	txt_set(txt_bus_volt_left, math.floor(busvolts[1]) )
+    txt_set(txt_bus_volt_right, math.floor(busvolts[2]) )
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------- Flaps get data --
+function PT_flaps(flapsdeployment)
+    img_rotate(img_flaps_deployment, flapsdeployment*45)
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------ Brakes get data -- 
+function PT_brake(brakes)
+    if brakes > 0 then move(txt_annun3, 778+deltax, 390+2*18+deltay, 300, 60) else move(txt_annun3,2000+deltax, nil, nil, nil ) end
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------ Annunciators get data -- 
+function PT_annunciators(a1,a2,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27)
+    if a1 < 1 then move(txt_annun1,2000+deltax, nil, nil, nil ) else move(txt_annun1, 778+deltax, 390+0*18+deltay, 300, 60) end
+    if a2 < 1 then move(txt_annun2,2000+deltax, nil, nil, nil ) else move(txt_annun2, 778+deltax, 390+1*18+deltay, 300, 60) end
+    if a4 < 1 then move(txt_annun4,2000+deltax, nil, nil, nil ) else move(txt_annun4, 778+deltax, 390+3*18+deltay, 300, 60) end
+    if a5 < 1 then move(txt_annun5,2000+deltax, nil, nil, nil ) else move(txt_annun5, 778+deltax, 390+4*18+deltay, 300, 60) end
+    if a6 < 1 then move(txt_annun6,2000+deltax, nil, nil, nil ) else move(txt_annun6, 778+deltax, 390+5*18+deltay, 300, 60) end
+    if a7 < 1 then move(txt_annun7,2000+deltax, nil, nil, nil ) else move(txt_annun7, 778+deltax, 390+6*18+deltay, 300, 60) end
+    if a8 < 1 then move(txt_annun8,2000+deltax, nil, nil, nil ) else move(txt_annun8, 778+deltax, 390+7*18+deltay, 300, 60) end
+    if a9 < 1 then move(txt_annun9,2000+deltax, nil, nil, nil ) else move(txt_annun9, 778+deltax, 390+8*18+deltay, 300, 60) end
+    if a10 < 1 then move(txt_annun10,2000+deltax, nil, nil, nil ) else move(txt_annun10, 778+deltax, 390+9*18+deltay, 300, 60) end
+    
+    if a11 < 1 then move(txt_annun11,2000+deltax, nil, nil, nil ) else move(txt_annun11, 862+deltax, 390+0*18+deltay, 300, 60) end
+    if a12 < 1 then move(txt_annun12,2000+deltax, nil, nil, nil ) else move(txt_annun12, 862+deltax, 390+1*18+deltay, 300, 60) end
+    if a13 < 1 then move(txt_annun13,2000+deltax, nil, nil, nil ) else move(txt_annun13, 862+deltax, 390+2*18+deltay, 300, 60) end
+    if a14 < 1 then move(txt_annun14,2000+deltax, nil, nil, nil ) else move(txt_annun14, 862+deltax, 390+3*18+deltay, 300, 60) end
+    if a15 < 1 then move(txt_annun15,2000+deltax, nil, nil, nil ) else move(txt_annun15, 862+deltax, 390+4*18+deltay, 300, 60) end
+    if a16 < 1 then move(txt_annun16,2000+deltax, nil, nil, nil ) else move(txt_annun16, 862+deltax, 390+5*18+deltay, 300, 60) end
+    if a17 < 1 then move(txt_annun17,2000+deltax, nil, nil, nil ) else move(txt_annun17, 862+deltax, 390+6*18+deltay, 300, 60) end
+    if a18 < 1 then move(txt_annun18,2000+deltax, nil, nil, nil ) else move(txt_annun18, 862+deltax, 390+7*18+deltay, 300, 60) end
+    if a19 < 1 then move(txt_annun19,2000+deltax, nil, nil, nil ) else move(txt_annun19, 862+deltax, 390+8*18+deltay, 300, 60) end
+    if a20 < 1 then move(txt_annun20,2000+deltax, nil, nil, nil ) else move(txt_annun20, 862+deltax, 390+9*18+deltay, 300, 60) end
+    
+    if a21 < 1 then move(txt_annun21,2000+deltax, nil, nil, nil ) else move(txt_annun21, 940+deltax, 390+0*18+deltay, 300, 60) end
+    if a22 < 1 then move(txt_annun22,2000+deltax, nil, nil, nil ) else move(txt_annun22, 940+deltax, 390+1*18+deltay, 300, 60) end
+    if a23 < 1 then move(txt_annun23,2000+deltax, nil, nil, nil ) else move(txt_annun23, 940+deltax, 390+2*18+deltay, 300, 60) end
+    if a24 < 1 then move(txt_annun24,2000+deltax, nil, nil, nil ) else move(txt_annun24, 940+deltax, 390+3*18+deltay, 300, 60) end
+    if a25 < 1 then move(txt_annun25,2000+deltax, nil, nil, nil ) else move(txt_annun25, 940+deltax, 390+4*18+deltay, 300, 60) end
+    if a26 < 1 then move(txt_annun26,2000+deltax, nil, nil, nil ) else move(txt_annun26, 940+deltax, 390+5*18+deltay, 300, 60) end
+    if a27 < 1 then move(txt_annun27,2000+deltax, nil, nil, nil ) else move(txt_annun27, 940+deltax, 390+6*18+deltay, 300, 60) end
+    --if a28 < 1 then move(txt_annun28,2000+deltax, nil, nil, nil ) else move(txt_annun28, 940+deltax, 390+7*18+deltay, 300, 60) end
+    --if a29 < 1 then move(txt_annun29,2000+deltax, nil, nil, nil ) else move(txt_annun29, 940+deltax, 390+8*18+deltay, 300, 60) end
+    --if a30 < 1 then move(txt_annun30,2000+deltax, nil, nil, nil ) else move(txt_annun30, 940+deltax, 390+9*18+deltay, 300, 60) end
+end
+--------------------------------------------------------------------------------------------------------------------------------------------------------------- Adf get data -- 
+function PT_adf(heading, adf1, adf2)
+	if adf1 > 89.5 and adf1 < 90.5 then
+		img_rotate(img_adf1_needle, 90)
+	else
+		img_rotate(img_adf1_needle, adf1)
+	end
+	if adf2 > 89.5 and adf2 < 90.5 then
+		img_rotate(img_adf2_needle, 90)
+	else
+		img_rotate(img_adf2_needle, adf2)
+	end	
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------ DME -- 
+function PT_dme(dme1, dme2)
+    if dme1 < 0.1 then txt_set(txt_dme1, "..." ) else txt_set(txt_dme1, math.floor(dme1*10)/10 ) end
+    if dme2 < 0.1 then txt_set(txt_dme2, "..." ) else txt_set(txt_dme2, math.floor(dme2*10)/10 ) end
+end
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------- Markers -- 
+function PT_markers(outer, middle, inner)
+if outer > 0 then visible(img__indicator_outermarker, true) else visible(img__indicator_outermarker, false) end
+if middle > 0 then visible(img__indicator_middlemarker, true) else visible(img__indicator_middlemarker, false) end
+if inner > 0 then visible(img__indicator_innermarker, true) else visible(img__indicator_innermarker, false) end
+end
+------------------------------------------------------------------------------------------------------------------------------------------------------------------- Datarefs -- 
+
+--FD_bars = img_add ( "fd_bars.png" , 355 , 242 , 219 , 33 )
+visible ( FD_bars , false )
+
+function PT_fd( fd_status, fd_pitch,act_pitch, fd_roll, act_roll)
+delta_pitch= fd_pitch - act_pitch
+delta_roll= fd_roll - act_roll
+delta_pitch = var_cap ( delta_pitch , -24 , 25 )
+delta_roll = var_cap ( delta_roll , -40 , 40 )
+if fd_status > 0 then
+visible ( FD_bars , true )
+else
+visible ( FD_bars , false )
+end
+if fd_pitch> 0 then
+pitch_const= -95/25
+else
+pitch_const= -103/25
+end
+move ( FD_bars , nil , 240 + delta_pitch *pitch_const  , nil , nil )
+
+img_rotate ( FD_bars , delta_roll )
+end
+
+function new_test(fuel)
+
+print(fuel)
+
+end
+
+-------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit/radios/adf1_cardinal_dir", "FLOAT",
+			            "sim/cockpit2/radios/indicators/adf1_relative_bearing_deg", "FLOAT",
+			            "sim/cockpit2/radios/indicators/adf2_relative_bearing_deg", "FLOAT", PT_adf)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/flightmodel2/controls/flap1_deploy_ratio", "FLOAT", PT_flaps)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/flightmodel/engine/ENGN_gen_amp", "FLOAT[8]", PT_genamps)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/electrical/bus_volts", "FLOAT[4]", PT_busvolts)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/controls/aileron_trim", "FLOAT",
+                        "sim/cockpit2/controls/rudder_trim", "FLOAT",
+                        "sim/cockpit2/controls/elevator_trim", "FLOAT", PT_trim)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/flightmodel/position/phi", "FLOAT",
+                        "sim/flightmodel/position/theta", "FLOAT",
+                        "sim/flightmodel/position/vh_ind_fpm", "FLOAT",  
+                        "sim/cockpit2/autopilot/vvi_dial_fpm", "FLOAT",
+                        "sim/cockpit2/gauges/indicators/radio_altimeter_height_ft_pilot","FLOAT", PT_atitude)-- actual vvi tgt vvi sim/cockpit2/gauges/indicators/vvi_fpm_pilot
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/gauges/indicators/airspeed_kts_pilot", "FLOAT",
+                        "sim/cockpit/autopilot/airspeed", "FLOAT", PT_airspeed)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/gauges/indicators/altitude_ft_pilot", "FLOAT",
+			            "sim/cockpit/misc/barometer_setting", "FLOAT",
+			            "sim/cockpit/autopilot/altitude", "FLOAT", PT_altimeter)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/gauges/indicators/heading_electric_deg_mag_pilot", "FLOAT",
+                        "sim/cockpit2/radios/actuators/HSI_source_select_pilot", "INT",
+                        "sim/cockpit2/radios/actuators/hsi_obs_deg_mag_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/nav1_hdef_dots_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/nav2_hdef_dots_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/gps_hdef_dots_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/nav1_vdef_dots_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/nav2_vdef_dots_pilot", "FLOAT",
+                        "sim/cockpit2/radios/indicators/hsi_vdef_dots_pilot", "FLOAT", 
+                        "sim/cockpit2/radios/indicators/nav1_display_horizontal", "INT", 
+                        "sim/cockpit2/radios/indicators/nav2_display_horizontal", "INT", 
+                        "sim/cockpit2/radios/indicators/hsi_flag_glideslope_pilot", "INT",
+                        "sim/cockpit/autopilot/heading_mag", "FLOAT", 
+                        "sim/cockpit2/radios/indicators/hsi_display_horizontal_pilot", "INT",
+                        "sim/cockpit2/gauges/indicators/wind_speed_kts", "FLOAT",
+                        "sim/cockpit2/gauges/indicators/wind_heading_deg_mag", "FLOAT", 
+                        "sim/cockpit2/autopilot/glideslope_status", "INT", 
+                        "sim/flightmodel/position/groundspeed", "FLOAT",
+                        "sim/flightmodel/position/true_airspeed","FLOAT",PT_hsi)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/radios/actuators/com1_frequency_hz", "INT",
+			            "sim/cockpit2/radios/actuators/com2_frequency_hz", "INT",
+			            "sim/cockpit2/radios/actuators/nav1_frequency_hz", "INT",
+			            "sim/cockpit2/radios/actuators/nav2_frequency_hz", "INT",
+			            "sim/cockpit2/radios/actuators/adf1_frequency_hz", "INT",
+			            "sim/cockpit2/radios/actuators/adf2_frequency_hz", "INT",
+			            "sim/cockpit/radios/transponder_code", "INT", PT_radio)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/weather/temperature_ambient_c", "FLOAT",
+			            "sim/cockpit/warnings/annunciators/ice", "INT", PT_oat)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/aircraft/parts/acf_gear_deploy", "FLOAT[10]", PT_gear)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit/autopilot/heading_mag", "FLOAT",
+	                    "sim/cockpit/autopilot/altitude", "FLOAT",
+	                    "sim/cockpit2/autopilot/vvi_dial_fpm", "FLOAT",
+	                    "sim/cockpit/autopilot/airspeed", "FLOAT",
+	                    "sim/cockpit/autopilot/autopilot_mode", "INT",			
+	                    "sim/cockpit2/autopilot/altitude_mode", "INT",
+	                    "sim/cockpit2/autopilot/vvi_status", "INT",
+	                    "sim/cockpit2/autopilot/speed_status", "INT",
+	                    "sim/cockpit2/autopilot/heading_status", "INT",
+	                    "sim/cockpit2/autopilot/nav_status", "INT",
+	                    "sim/cockpit2/autopilot/approach_status", "INT",
+	                    "sim/cockpit2/autopilot/backcourse_status", "INT",
+	                    "sim/cockpit2/switches/yaw_damper_on", "INT",
+	                    "sim/cockpit2/autopilot/hnav_armed", "INT",
+	                    "sim/cockpit2/autopilot/glideslope_status", "INT",
+	                    "sim/cockpit2/autopilot/autothrottle_enabled", "INT", PT_autopilot)
+	                    
+	                   -- sim/cockpit2/autopilot/glideslope_status	int	n	enum	Autopilot glideslope status. 0=off,1=armed,2=captured
+	                  -- sim/cockpit2/autopilot/autothrottle_enabled	int	y	boolean	Auto-throttle on, 0 or 1.  This is the switch.
+--sim/cockpit2/autopilot/autothrottle_on	int	n	boolean	Auto-throttle really working?  Takes into account failures, esys, etc.
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/engine/indicators/N1_percent", "FLOAT[8]",
+                        "sim/flightmodel/engine/ENGN_ITT_c", "FLOAT[8]", 
+                        "sim/cockpit2/engine/indicators/fuel_flow_kg_sec", "FLOAT[8]",
+                        "sim/cockpit2/engine/indicators/N2_percent", "FLOAT[8]",
+                        "sim/cockpit2/engine/indicators/oil_pressure_psi", "FLOAT[8]",
+                        "sim/cockpit2/engine/indicators/oil_temperature_deg_C", "FLOAT[8]", PT_engine)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit/pressure/cabin_altitude_actual_m_msl", "FLOAT", 
+                        "sim/flightmodel/weight/m_total", "FLOAT", PT_info)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/flightmodel/weight/m_fuel_total", "FLOAT", PT_fuel)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/controls/parking_brake_ratio", "FLOAT", PT_brake)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/annunciators/master_warning", "INT",
+                        "sim/cockpit2/annunciators/master_caution", "INT",
+                        "sim/cockpit2/annunciators/speedbrake", "INT",
+                        "sim/cockpit2/annunciators/autopilot_disconnect", "INT",
+                        "sim/cockpit2/annunciators/low_vacuum", "INT",
+                        "sim/cockpit2/annunciators/low_voltage", "INT",
+                        "sim/cockpit2/annunciators/fuel_quantity", "INT",
+                        "sim/cockpit2/annunciators/hydraulic_pressure", "INT",
+                        "sim/cockpit2/annunciators/ice", "INT",
+                        "sim/cockpit2/annunciators/pitot_heat", "INT",
+                        "sim/cockpit2/annunciators/battery_charge_hi", "INT",
+                        "sim/cockpit2/annunciators/cabin_altitude_12500", "INT",	
+                        "sim/cockpit2/annunciators/autopilot_trim_fail", "INT",
+                        "sim/cockpit2/annunciators/crossfeed_on", "INT",
+                        "sim/cockpit2/annunciators/cabin_door_open", "INT",
+                        "sim/cockpit2/annunciators/external_power_on", "INT",
+                        "sim/cockpit2/annunciators/no_inverters", "INT",
+                        "sim/cockpit2/annunciators/fuel_pressure", "INT",
+                        "sim/cockpit2/annunciators/oil_pressure", "INT",
+                        "sim/cockpit2/annunciators/oil_temperature", "INT",
+                        "sim/cockpit2/annunciators/generator", "INT",
+                        "sim/cockpit2/annunciators/chip_detect", "INT",	
+                        "sim/cockpit2/annunciators/engine_fire", "INT",
+                        "sim/cockpit2/annunciators/reverser_deployed", "INT",
+                        "sim/cockpit2/annunciators/inverter", "INT",
+                        "sim/cockpit2/annunciators/fasten_seatbelt", "INT", PT_annunciators)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/flightmodel/position/latitude", "DOUBLE",
+			            "sim/flightmodel/position/longitude", "DOUBLE", 
+			            "sim/flightmodel/position/magpsi", "FLOAT", PT_map)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit/electrical/battery_array_on", "INT[8]",
+                        "sim/cockpit/electrical/avionics_on", "INT",
+                        "sim/cockpit/electrical/generator_on", "INT[8]",
+                        "sim/cockpit/pressure/bleed_air_on", "INT",
+                        "sim/cockpit/electrical/gpu_on", "INT",
+                        "sim/cockpit/switches/ice_detect", "INT", 
+                        "sim/cockpit/switches/anti_ice_on", "INT",
+                        "sim/cockpit2/engine/actuators/ignition_key", "INT[8]", 
+                        "sim/cockpit/electrical/beacon_lights_on", "INT",
+                        "sim/cockpit/electrical/strobe_lights_on", "INT",
+                        "sim/cockpit/electrical/landing_lights_on", "INT",
+                        "sim/cockpit/electrical/taxi_light_on", "INT",
+                        "sim/cockpit/electrical/nav_lights_on", "INT",
+                        "sim/cockpit/switches/fasten_seat_belts", "INT",
+                        "sim/cockpit/switches/pitot_heat_on", "INT", PT_button)	
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                      
+xpl_dataref_subscribe("sim/cockpit/radios/nav1_dme_dist_m", "FLOAT",
+                        "sim/cockpit/radios/nav2_dme_dist_m", "FLOAT", PT_dme)                                            
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit/misc/outer_marker_lit", "INT", 
+                        "sim/cockpit/misc/middle_marker_lit", "INT",
+                        "sim/cockpit/misc/inner_marker_lit", "INT",PT_markers)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+xpl_dataref_subscribe("sim/cockpit2/autopilot/flight_director_mode", "INT", 
+                        "sim/cockpit2/autopilot/flight_director_pitch_deg", "FLOAT",
+                        "sim/cockpit2/gauges/indicators/pitch_electric_deg_pilot", "FLOAT",
+                        "sim/cockpit2/autopilot/flight_director_roll_deg", "FLOAT",
+                        "sim/cockpit2/gauges/indicators/roll_electric_deg_pilot" , "FLOAT",	PT_fd)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+xpl_dataref_subscribe("sim/cockpit2/annunciators/fuel_quantity", "INT", new_test)
