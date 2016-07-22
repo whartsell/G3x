@@ -6,6 +6,7 @@ function FullPfdDisplayArea:new(o)
 	self.__index = self
 	self.components = {}
 	self.components.AttitudeIndicator = AttitudeIndicator:new()
+	self.components.HeadingBar = HeadingBar:new()
 	self.components.AsiTape = AirSpeedTape:new()
 	self.components.AltTape = AltitudeTape:new()
 	
@@ -16,4 +17,5 @@ function FullPfdDisplayArea:refresh()
 	self.components.AttitudeIndicator:refresh()
 	self.components.AsiTape:refresh()
 	self.components.AltTape:refresh()
+	self.components.HeadingBar:refresh()
 end
