@@ -21,6 +21,4 @@ xpl_dataref_subscribe(
 	'sim/cockpit2/autopilot/flight_director_mode','INT',
 	'sim/cockpit2/autopilot/flight_director_roll_deg', 'FLOAT',
 	'sim/cockpit2/autopilot/flight_director_pitch_deg','FLOAT',
-	-- TODO integrate below
-	--'sim/cockpit/autopilot/heading_mag', 'FLOAT',
 	GDU37XCallback)

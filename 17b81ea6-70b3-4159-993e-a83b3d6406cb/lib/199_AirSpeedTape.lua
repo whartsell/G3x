@@ -41,7 +41,6 @@ function AirSpeedTape:refresh()
 	move(self.images.asiHundreds,nil,-200 + (hundreds * number_scale),nil,nil)
 	move(self.images.asiTape,nil,-1774 + (asi * tape_scale)  ,nil,nil)
 	txt_set(self.text.tas,string.format("%i",GSU25:safeGetData('tas')))
-	--TODO need to implement GPS module for below
-	--txt_set(self.text.gs,string.format("%i",math.floor(groundspeed*1.94384))  )
+	txt_set(self.text.gs,string.format("%i",math.floor(GAD29:safeGetData('groundspeed')*1.94384))  )
 	
 end

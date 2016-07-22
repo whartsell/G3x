@@ -25,14 +25,7 @@ function pfdRefresh()
 end
 
 
-function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime)
-	data = {}
-	data.GpsCurrentWaypoint = GpsCurrentWaypoint
-	data.GpsBearing = GpsBearing
-	data.GpsDistance = GpsDistance
-	data.GpsTime = GpsTime
-	GAD29:Update(data)
-end
+
 
 
 --drives the refresh on the menu currently...will most likely become a gdu37x callback
@@ -55,15 +48,5 @@ xpl_dataref_subscribe('whartsell/g3x/softKey1','INT',
 xpl_dataref_subscribe('whartsell/g3x/joystick/encoder_delta',"INT",
 	joystickHandler)
 
+	
 
-	
-xpl_dataref_subscribe('whartsell/g3x/current_wpt','STRING',
-	'sim/cockpit2/radios/indicators/gps_bearing_deg_mag','FLOAT',
-	'sim/cockpit2/radios/indicators/gps_dme_distance_nm','FLOAT',
-	'sim/cockpit2/radios/indicators/gps_dme_time_min','FLOAT',
-	-- TODO integrate below
-	--'sim/cockpit2/gauges/indicators/wind_speed_kts', "FLOAT",
-	--'sim/cockpit2/gauges/indicators/wind_heading_deg_mag','FLOAT',
-	--"sim/flightmodel/position/groundspeed", "FLOAT",
-	GAD29Callback)
-	

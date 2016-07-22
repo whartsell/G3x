@@ -31,9 +31,8 @@ end
 function DataBarDisplayArea:refresh()
 	local timeFirstValue = 0
 	local timeSecondValue = 0
-	local distance = GAD29:getSafeData('GpsDistance')
-	local ete = GAD29:getSafeData('GpsTime')
-	
+	local distance = GAD29:safeGetData('GpsDistance')
+	local ete = GAD29:safeGetData('GpsTime')
 	-- distance should only show tenths if less than 100
 	if distance > 100 then
 		distance = var_round(distance,0)
@@ -73,8 +72,7 @@ function DataBarDisplayArea:refresh()
 	
 	--txt_set(txt_timeWpt,ete)
 	
-	txt_set(self.text.curWpt,GAD29:getSafeData('GpsCurrentWaypoint'))
+	txt_set(self.text.curWpt,GAD29:safeGetData('GpsCurrentWaypoint'))
 	txt_set(self.text.distanceWpt,distance)
-	txt_set(self.text.bearingWpt,var_round(GAD29:getSafeData('GpsBearing'),0))
-
+	txt_set(self.text.bearingWpt,var_round(GAD29:safeGetData('GpsBearing'),0))
 end
