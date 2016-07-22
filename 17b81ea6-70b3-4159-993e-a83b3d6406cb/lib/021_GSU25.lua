@@ -18,7 +18,7 @@ end
 
 GSU25 = GSU25Impl:new{}
 
-function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,pitch,vsi)
+function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,pitch,vsi,slip)
 	local data = {}
 	data.airspeed = airspeed
 	data.machNo = machNo
@@ -30,6 +30,7 @@ function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,p
 	data.roll = roll
 	data.pitch = pitch
 	data.vsi = vsi
+	data.slip = slip
 	GSU25:Update(data)
 	
 end
@@ -46,4 +47,5 @@ xpl_dataref_subscribe(
 	'sim/flightmodel/position/phi', 'FLOAT',
 	'sim/flightmodel/position/theta', 'FLOAT',
 	'sim/cockpit2/gauges/indicators/vvi_fpm_pilot','FLOAT',
+	'sim/cockpit2/gauges/indicators/slip_deg','FLOAT',
 	GSU25Callback)
