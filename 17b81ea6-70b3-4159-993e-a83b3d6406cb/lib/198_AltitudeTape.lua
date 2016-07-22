@@ -67,6 +67,9 @@ function AltitudeTape:new(o)
 		viewport_rect(self.images.alt20s,424,212,28,56),
 		viewport_rect(self.images.altBug,357,104,12,272),
 	}
+	
+	self.components = {}
+	self.components.Vsi = VSI6k:new()
 	return o
 end
 
@@ -109,4 +112,6 @@ function AltitudeTape:refresh()
 	txt_set(self.text.altBugText,(string.format("%i",altitudeBug)))
 	txt_set(self.text.baro,(string.format("%.2f",GSU25:safeGetData('baro'))))
 	move(self.images.altBug,nil, 222 + ((alt-altitudeBug)*tape_scale),nil,nil)
+	
+	self.components.Vsi:refresh()
 end

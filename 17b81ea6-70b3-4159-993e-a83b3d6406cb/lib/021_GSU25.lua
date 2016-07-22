@@ -12,7 +12,7 @@ function GSU25:Update(aData)
 
 end
 
-function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,pitch)
+function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,pitch,vsi)
 	local data = {}
 	data.airspeed = airspeed
 	data.machNo = machNo
@@ -23,6 +23,7 @@ function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,p
 	data.baro = baro
 	data.roll = roll
 	data.pitch = pitch
+	data.vsi = vsi
 	GSU25:Update(data)
 	
 	
@@ -40,4 +41,5 @@ xpl_dataref_subscribe(
 	'sim/cockpit/misc/barometer_setting', 'FLOAT',
 	'sim/flightmodel/position/phi', 'FLOAT',
 	'sim/flightmodel/position/theta', 'FLOAT',
+	'sim/cockpit2/gauges/indicators/vvi_fpm_pilot','FLOAT',
 	GSU25Callback)
