@@ -10,6 +10,7 @@ function FullPfdDisplayArea:new(o)
 	self.components.AsiTape = AirSpeedTape:new()
 	self.components.AltTape = AltitudeTape:new()
 	self.components.SlipIndicator = SlipIndicator:new()
+	self.components.VnavIndicator = VnavIndicator:new()
 	
 	return o
 end
@@ -20,4 +21,5 @@ function FullPfdDisplayArea:refresh()
 	self.components.AltTape:refresh()
 	self.components.HeadingBar:refresh()
 	self.components.SlipIndicator:refresh()
+	self.components.VnavIndicator:refresh()
 end

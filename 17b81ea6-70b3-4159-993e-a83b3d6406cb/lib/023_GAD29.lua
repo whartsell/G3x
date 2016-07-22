@@ -44,7 +44,7 @@ end
 
 GAD29 = GAD29Impl:new{}
 
-function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime,windSpeed,windHeading,groundspeed)
+function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime,windSpeed,windHeading,groundspeed,vdef,isVerticalSignal,navSource)
 	local data = {}
 	data.GpsCurrentWaypoint = GpsCurrentWaypoint
 	data.GpsBearing = GpsBearing
@@ -53,6 +53,9 @@ function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime,windSpe
 	data.windSpeed = windSpeed
 	data.windHeading = windHeading
 	data.groundspeed = groundspeed
+	data.vdef = vdef
+	data.isVerticalSignal = isVerticalSignal
+	data.navSource = navSource
 	GAD29:Update(data)
 end
 
@@ -63,4 +66,7 @@ xpl_dataref_subscribe('whartsell/g3x/current_wpt','STRING',
 	'sim/cockpit2/gauges/indicators/wind_speed_kts', "FLOAT",
 	'sim/cockpit2/gauges/indicators/wind_heading_deg_mag','FLOAT',
 	"sim/flightmodel/position/groundspeed", "FLOAT",
+	'sim/cockpit2/radios/indicators/hsi_vdef_dots_pilot', 'FLOAT',
+	'sim/cockpit2/radios/indicators/hsi_display_vertical_pilot','INT',
+	'sim/cockpit/switches/HSI_selector','INT',
 	GAD29Callback)
