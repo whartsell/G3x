@@ -12,7 +12,7 @@ end
 function SimData:Update(aData)
 	for key,value in pairs(aData) do
 		self.data[key] = value
-		print(key,value)
+		--print(key,value)
 	end
 	
 end
