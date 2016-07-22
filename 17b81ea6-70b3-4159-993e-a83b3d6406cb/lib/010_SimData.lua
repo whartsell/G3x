@@ -17,5 +17,14 @@ function SimData:Update(aData)
 	
 end
 
+function SimData:safeGetData(key)
+	print('key is',key)
+	if self.data[key] ~= nil then return self.data[key]
+	else 
+		print('found nil returning 0 for:',key)
+		return 0
+	end
+end
+
 -- this needs to be global so we'll init it here
 --SimData = SimData:new()

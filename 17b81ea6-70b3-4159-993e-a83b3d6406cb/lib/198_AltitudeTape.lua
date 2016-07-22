@@ -74,8 +74,8 @@ function AltitudeTape:refresh()
 
 	--TODO need smoother transition on alt wheels..they can read low when just a bit below alt.
 -- e.g 8499.999 is reading 8400 instead of 85
-	local alt = var_cap(GSU25.data.altitude,-2000,30000)
-	local altitudeBug = var_cap(GDU37X.data.altBug,-1000,30000)
+	local alt = var_cap(GSU25:safeGetData('altitude'),-2000,30000)
+	local altitudeBug = var_cap(GDU37X:safeGetData('altBug'),-1000,30000)
 	local tape_scale = 12/20
 	local bigAlt_scale = 350/9
 	local smlAlt_scale = 299/10
@@ -107,6 +107,6 @@ function AltitudeTape:refresh()
 	move(self.images.altH,nil,self.altHDy + (hundreds * smlAlt_scale), nil,nil)
 	move(self.images.alt20s,nil,self.altTwDy + (tens * tens_scale), nil, nil)
 	txt_set(self.text.altBugText,(string.format("%i",altitudeBug)))
-	txt_set(self.text.baro,(string.format("%.2f",GSU25.data.baro)))
-	move(self.images.altBug,nil, -969 + ((alt-altitudeBug)*tape_scale),nil,nil)
+	txt_set(self.text.baro,(string.format("%.2f",GSU25:safeGetData('baro'))))
+	move(self.images.altBug,nil, 222 + ((alt-altitudeBug)*tape_scale),nil,nil)
 end

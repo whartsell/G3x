@@ -1,7 +1,7 @@
-
+fullPfdDisplayArea = FullPfdDisplayArea:new()
 softKeyDisplayArea = SoftKeyDisplayArea:new()
 dataBarDisplayArea = DataBarDisplayArea:new()
-fullPfdDisplayArea = FullPfdDisplayArea:new()
+
 
 function softKeyHandler(skey1,skey2,skey3,skey4,skey5)
 	local skeys = {skey1,skey2,skey3,skey4,skey5}
@@ -24,14 +24,6 @@ function pfdRefresh()
 	fullPfdDisplayArea:refresh()
 end
 
-function GDU37XCallback(hdgBug,altBug,asiBug,vsiBug)
-	data = {}
-	data.hdgBug = hdgBug
-	data.altBug = altBug
-	data.asiBug = asiBug
-	data.vsiBug = vsiBug
-	GDU37X:Update(data)
-end
 
 function GAD29Callback(GpsCurrentWaypoint,GpsBearing,GpsDistance,GpsTime)
 	data = {}
@@ -46,7 +38,7 @@ end
 --drives the refresh on the menu currently...will most likely become a gdu37x callback
 refreshTimers = {
 	menuTimer = timer_start(100,100,dataBarsRefresh),
-	pfdTimer = timer_start(33,33,pfdRefresh)
+	pfdTimer = timer_start(100,100,pfdRefresh)
 	}
 
 
@@ -63,14 +55,7 @@ xpl_dataref_subscribe('whartsell/g3x/softKey1','INT',
 xpl_dataref_subscribe('whartsell/g3x/joystick/encoder_delta',"INT",
 	joystickHandler)
 
-xpl_dataref_subscribe(
-	'sim/cockpit/autopilot/heading_mag', 'FLOAT',
-	"sim/cockpit/autopilot/altitude", "FLOAT",
-	'sim/cockpit/autopilot/airspeed', 'FLOAT',
-	'sim/cockpit/autopilot/vertical_velocity', 'FLOAT',
-	-- TODO integrate below
-	--'sim/cockpit/autopilot/heading_mag', 'FLOAT',
-	GDU37XCallback)
+
 	
 xpl_dataref_subscribe('whartsell/g3x/current_wpt','STRING',
 	'sim/cockpit2/radios/indicators/gps_bearing_deg_mag','FLOAT',

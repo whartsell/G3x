@@ -32,7 +32,7 @@ function AirSpeedTape:refresh()
 --TODO put in nifty rolling animation for tens and 100s
 	local number_scale = 350/9
 	local tape_scale = 1924/480
-	local asi = var_cap(GSU25.data.airspeed,0,500)
+	local asi = var_cap(GSU25:safeGetData('airspeed'),0,500)
 	local hundreds = math.floor(asi/100)
 	local tens = math.floor(asi%100/10)
 	local ones = asi%100%10
@@ -40,7 +40,8 @@ function AirSpeedTape:refresh()
 	move(self.images.asiTens,nil,-200 + (tens * number_scale),nil,nil)
 	move(self.images.asiHundreds,nil,-200 + (hundreds * number_scale),nil,nil)
 	move(self.images.asiTape,nil,-1774 + (asi * tape_scale)  ,nil,nil)
-	txt_set(self.text.tas,string.format("%i",GSU25.data.tas))
+	txt_set(self.text.tas,string.format("%i",GSU25:safeGetData('tas')))
+	--TODO need to implement GPS module for below
 	--txt_set(self.text.gs,string.format("%i",math.floor(groundspeed*1.94384))  )
 	
 end
