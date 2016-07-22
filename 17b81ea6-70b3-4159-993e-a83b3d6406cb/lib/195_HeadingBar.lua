@@ -37,7 +37,8 @@ end
 function HeadingBar:refresh()
 	--TODO move to GAD29
 	--track = calculateTrack(windDir,windSpeed,heading,tas)
-	local track = 0
+	local track = GAD29:safeGetData('track')
+	--print('track',track)
 	local headingTapeScale = -5
 	local turnRateScale = 90/20
 	local heading = GSU25:safeGetData('heading')

@@ -1,16 +1,22 @@
 -- The GSU25 is the ADAHRS Air Data Computer and the Attitude and Heading Reference System
 -- all data derived by the GSU25 should be contained here
-GSU25 = SimData:new()
+GSU25Impl = SimData:new()
 
-function GSU25:Update(aData)
-	SimData.Update(self,aData)
+function GSU25Impl:calculateTAS()
 	if self.data.machNo ~= nil  and self.data.oat ~= nil then 
 		self.data.tas = 661.47 * self.data.machNo * math.sqrt((self.data.oat + 273.15) / 288.15)
 	else 
 		self.data.tas = 0
 	end
-
 end
+
+
+function GSU25Impl:Update(aData)
+	SimData.Update(self,aData)
+	self:calculateTAS()
+end
+
+GSU25 = GSU25Impl:new{}
 
 function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,pitch,vsi)
 	local data = {}
@@ -25,8 +31,6 @@ function GSU25Callback(airspeed,machNo,oat,heading,turnRate,altitude,baro,roll,p
 	data.pitch = pitch
 	data.vsi = vsi
 	GSU25:Update(data)
-	
-	
 	
 end
 

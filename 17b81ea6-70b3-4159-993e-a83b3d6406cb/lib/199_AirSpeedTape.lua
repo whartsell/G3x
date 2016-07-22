@@ -36,6 +36,8 @@ function AirSpeedTape:refresh()
 	local hundreds = math.floor(asi/100)
 	local tens = math.floor(asi%100/10)
 	local ones = asi%100%10
+	--print("GSU25:safeGetData(tas)",GSU25:safeGetData('tas'))
+	--print("GSU25.data.tas:",GSU25.data.tas)
 	move(self.images.asiOnes,nil,-200 + (ones * number_scale),nil,nil)
 	move(self.images.asiTens,nil,-200 + (tens * number_scale),nil,nil)
 	move(self.images.asiHundreds,nil,-200 + (hundreds * number_scale),nil,nil)
