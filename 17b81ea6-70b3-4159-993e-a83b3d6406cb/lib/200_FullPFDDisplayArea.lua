@@ -12,6 +12,7 @@ function FullPfdDisplayArea:new(o)
 	self.components.SlipIndicator = SlipIndicator:new()
 	self.components.VnavIndicator = VnavIndicator:new()
 	self.components.CDI = CourseDeviationIndicator:new()
+	self.components.HSI = HorizontalSituationIndicator:new()
 	
 	return o
 end
@@ -24,4 +25,5 @@ function FullPfdDisplayArea:refresh()
 	self.components.SlipIndicator:refresh()
 	self.components.VnavIndicator:refresh()
 	self.components.CDI:refresh()
+	self.components.HSI:refresh()
 end

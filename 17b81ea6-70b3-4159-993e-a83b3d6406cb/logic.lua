@@ -31,7 +31,7 @@ end
 --drives the refresh on the menu currently...will most likely become a gdu37x callback
 refreshTimers = {
 	menuTimer = timer_start(100,100,dataBarsRefresh),
-	pfdTimer = timer_start(100,100,pfdRefresh)
+	pfdTimer = timer_start(30,30,pfdRefresh)
 	}
 
 
