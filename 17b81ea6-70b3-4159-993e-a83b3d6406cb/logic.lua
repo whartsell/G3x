@@ -38,7 +38,8 @@ refreshTimers = {
 --These probably should be with the GDU37x as they are buttons on it but im keeping them separate 
 -- due to the fact they are driven by a plugin.  If/when Airmanager has hardware support I will 
 -- change it
-xpl_dataref_subscribe('whartsell/g3x/softKey1','INT',
+xpl_dataref_subscribe(
+	'whartsell/g3x/softKey1','INT',
 	'whartsell/g3x/softKey2','INT',
 	'whartsell/g3x/softKey3','INT',
 	'whartsell/g3x/softKey4','INT',

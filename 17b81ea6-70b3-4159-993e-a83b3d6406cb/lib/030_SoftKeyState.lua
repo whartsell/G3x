@@ -12,6 +12,7 @@ function SoftKeyState:new(o)
 	o = o or {}
 	setmetatable(o,self)
 	self.__index = self
+	self.encoderDelta = 0
 	return o
 end
 function SoftKeyState:setContext(context)
@@ -35,13 +36,24 @@ end
 
 function SoftKeyState:handleJoystick(joystick)
 	for key,value in pairs(joystick) do
-		print(key,value)
+	
+		--print(key,value)
 	end
 end
 
-function SoftKeyState:joystickProcessor(joystickCommands)
-	
+function SoftKeyState:processEncoder(encoder)
+	local offset = 0
+	if encoder ~=0 then
+		offset = encoder - self.encoderDelta
+		self.encoderDelta = encoder
+	else 
+		self.encoderDelta = 0
+	end
+	print('offset',offset,'delta',self.encoderDelta)
+	return offset
 end
+
+
 function SoftKeyState:enter()
 	for i = 1,5 do
 		self.buttons[i].active=false

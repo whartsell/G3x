@@ -22,25 +22,15 @@ function HDGMenuState:handleSoftKeys(softKeys)
 end
 
 function HDGMenuState:handleJoystick(joystick)
-	if joystick.encoder ~= 0 then
-	-- this is just a test..it needs to be cleaned up but works
-	-- should rename to joystick/encoder_delta
-		local offset = math.floor(joystick.encoder/4)
-		local newHeading = offset - self.delta + GDU37X.data.hdgBug
+	local currentHeading = GDU37X:safeGetData('hdgBug')
+		local newHeading = self:processEncoder(joystick.encoder) + currentHeading
+		
 		if newHeading >359 then
 			newHeading = newHeading - 360
 		elseif newHeading < 0 then
 			newHeading = newHeading + 360
 		end
-		
-		xpl_dataref_write('sim/cockpit/autopilot/heading_mag','FLOAT',newHeading)
-		self.delta =offset
-		print(offset)
-	else 
-		self.delta = 0
-	end
-	
-	
+		xpl_dataref_write('sim/cockpit/autopilot/heading_mag','FLOAT',newHeading) 
 end
 
 
