@@ -29,4 +29,13 @@ function BaroMenuState:handleSoftKeys(softKeys)
 	end
 end
 
+function BaroMenuState:handleJoystick(joystick)
+	--TODO need var_cap for max/min baro
+	local currentBaro = GSU25:safeGetData('baro')
+		local newBaro = self:processEncoder(joystick.encoder)*0.01 + currentBaro
+		print("new baro", newBaro)
+		
+		xpl_dataref_write('sim/cockpit/misc/barometer_setting', 'FLOAT',newBaro) 
+end
+
 

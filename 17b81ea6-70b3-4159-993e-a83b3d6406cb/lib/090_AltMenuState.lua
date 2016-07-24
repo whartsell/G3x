@@ -18,3 +18,16 @@ function AltMenuState:handleSoftKeys(softKeys)
 	end
 end
 
+function AltMenuState:handleJoystick(joystick)
+	local currentAltBug = GDU37X:safeGetData('altBug')
+		local newAltBug = var_round((self:processEncoder(joystick.encoder)*100 + currentAltBug)/100,0) * 100
+		newAltBug = var_cap(newAltBug,-1000,30000)
+		--local newAltBug = (self:processEncoder(joystick.encoder)+ 50) / 100 * 100 + currentAltBug
+		print("new AltBug", newAltBug)
+		
+		xpl_dataref_write("sim/cockpit/autopilot/altitude", "FLOAT",newAltBug) 
+end
+
+
+
+
